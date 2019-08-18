@@ -1,7 +1,7 @@
 {
     "name": "lemo-tx",
     "namespace": "LemoFoundationLtd",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "A tool for creating, manipulating and signing LemoChain transactions",
     "main": "dist/lemo-tx.cjs.js",
     "browser": "dist/lemo-tx-browser.cjs.js",
