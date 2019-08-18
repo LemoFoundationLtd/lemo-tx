@@ -8,7 +8,7 @@
     "dependencies": {
         "@babel/runtime": "7.3.1",
         "bignumber.js": "github:LemoFoundationLtd/bignumber.js#fit_otto",
-        "lemo-utils": "^1.0.0",
+        "lemo-utils": "^1.1.0",
         "rollup-plugin-node-globals": "1.4.0",
         "safe-buffer": "5.1.2"
     },
