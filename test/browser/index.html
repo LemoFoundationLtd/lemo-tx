@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mocha</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="mocha.css" />
+    </head>
+    <body>
+        <div id="mocha"></div>
+        <script src="../../node_modules/mocha/mocha.js"></script>
+        <script>
+            mocha.setup('bdd')
+        </script>
+        <script src="../../dist/lemo-tx.min.js"></script>
+        <script src="../../node_modules/chai/chai.js"></script>
+        <script>
+            (() => {
+                const assert = chai.assert
+                const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb'
+                const testAddr = 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
+                const emptyTxInfo = {
+                    txConfig: {
+                        chainID: 200,
+                        expirationTime: 1544584596,
+                        from: testAddr,
+                    },
+                    hash: '0x8dd85a833c482b4cb24f261e2d5378c14507eb01a92d89eb4a8278302f70cff5',
+                    hashAfterSign: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+                }
+
+
+                describe('Tx_hash', () => {
+                    it('without signature', () => {
+                        const tx = new LemoTx(emptyTxInfo.txConfig)
+                        assert.equal(tx.hash(), emptyTxInfo.hash)
+                    })
+                    it('with signature', () => {
+                        const tx = new LemoTx(emptyTxInfo.txConfig)
+                        tx.signWith(testPrivate)
+                        assert.equal(tx.hash(), emptyTxInfo.hashAfterSign)
+                    })
+                })
+            })()
+        </script>
+        <script>
+            mocha.run()
+        </script>
+    </body>
+</html>
