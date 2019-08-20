@@ -36,7 +36,7 @@ console.log(tx.toString())
 ## LemoTx API
 
 API | description
----|---|---|---
+---|---
 [new LemoTx(txInfo)](#tx-sign) | Create a transaction 
 [tx.signWith(privateKey)](#tx-signWith) | Sign transaction 
 [tx.hash()](#tx-hash) | Calculate hash of the transaction 
