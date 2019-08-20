@@ -73,6 +73,7 @@ describe('CreateAssetTx_new', () => {
         {field: 'decimal', configData: '0xAB', error: errors.TXInvalidType('decimal', '0xAB', ['number'])},
         {field: 'decimal', configData: '18', error: errors.TXInvalidType('decimal', '18', ['number'])},
         {field: 'decimal', configData: 0xfffff, error: errors.TXInvalidRange('decimal', 0xfffff, 0, 0xffff)},
+        {field: 'decimal', configData: 20, error: errors.DecimalDigitsError()},
         {field: 'isReplenishable', configData: false},
         {field: 'isReplenishable', configData: 'false', error: errors.TXInvalidType('isReplenishable', 'false', ['boolean'])},
         {field: 'isReplenishable', configData: 1, error: errors.TXInvalidType('isReplenishable', 1, ['boolean'])},
