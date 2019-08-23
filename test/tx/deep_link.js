@@ -17,10 +17,10 @@ describe('create_deep_link', () => {
     })
     it('type_config', () => {
         const txConfig = {
-            from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
+            from: 'Lemo888888888888888888888888888888888888',
             type: 1,
         }
-        assert.equal(LemoTx.createDeepLink(txConfig), 'lemo://pay/tx?ty=1&c=1&f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D')
+        assert.equal(LemoTx.createDeepLink(txConfig), 'lemo://pay/tx?ty=1&c=1&f=Lemo888888888888888888888888888888888888')
     })
     it('version_config', () => {
         const txConfig = {
@@ -79,10 +79,10 @@ describe('parse_deep_link', () => {
         assert.deepEqual(LemoTx.parseDeepLink(url), {chainID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'})
     })
     it('full_url', () => {
-        const url = 'lemo://pay/tx?ty=100&c=1&s=7sdu&s=5dt6eu&s=5dgye&gs=5hf65gf&gs=h65hd&v=2&f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&t=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&tn=accouneName&p=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&gp=2345.645465656&gl=1342&a=100.01&d=0x15&e=1516561&m=dGhpcyBpcyBhIGV4YW1wbGU'
+        const url = 'lemo://pay/tx?ty=1&c=100&s=7sdu&s=5dt6eu&s=5dgye&gs=5hf65gf&gs=h65hd&v=2&f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&t=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&tn=accouneName&p=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&gp=2345.645465656&gl=1342&a=100.01&d=0x15&e=1516561&m=dGhpcyBpcyBhIGV4YW1wbGU'
         assert.deepEqual(LemoTx.parseDeepLink(url), {
-            type: 100,
-            chainID: 1,
+            type: 1,
+            chainID: 100,
             version: 2,
             from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
             to: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
@@ -99,7 +99,7 @@ describe('parse_deep_link', () => {
         })
     })
     it('chainID_url', () => {
-        const url = 'lemo://pay/tx?c=100&f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
-        assert.deepEqual(LemoTx.parseDeepLink(url), {chainID: 100, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'})
+        const url = 'lemo://pay/tx?f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
+        assert.deepEqual(LemoTx.parseDeepLink(url), {chainID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'})
     })
 })
