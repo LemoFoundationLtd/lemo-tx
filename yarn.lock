@@ -897,6 +897,11 @@ base-x@3.0.4:
   dependencies:
     safe-buffer "^5.0.1"
 
+base64-url@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/base64-url/-/base64-url-2.3.2.tgz#d7ea32e80ce3c3ad49f823e77c4dd247c6b81759"
+  integrity sha512-2QpXjtjndKqPn9JKBpMTCbDGpgicfLUu+N5Y1vEfbuyqb1MN1D68C9YKCth4SjTHRvJleF3tPuxhLbH79MM0iQ==
+
 bcrypt-pbkdf@^1.0.0:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/bcrypt-pbkdf/download/bcrypt-pbkdf-1.0.2.tgz#a4301d389b6a43f9b67ff3ca11a3f6637e360e9e"
@@ -2462,6 +2467,11 @@ jest-worker@^23.2.0:
   dependencies:
     merge-stream "^1.0.1"
 
+js-base64@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
+  integrity sha512-M7kLczedRMYX4L8Mdh4MzyAMM9O5osx+4FcOQuTvr3A9F2D9S5JXheN0ewNbrvK2UatkTRhL5ejGmGSjNMiZuw==
+
 js-levenshtein@^1.1.3:
   version "1.1.6"
   resolved "https://registry.npm.taobao.org/js-levenshtein/download/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
@@ -3380,10 +3390,10 @@ punycode@^2.1.0:
   resolved "https://registry.npm.taobao.org/punycode/download/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha1-tYsBCsQMIsVldhbI0sLALHv0eew=
 
-qs@^6.5.1:
+qs@^6.5.1, qs@^6.8.0:
   version "6.8.0"
-  resolved "https://registry.npm.taobao.org/qs/download/qs-6.8.0.tgz?cache=0&sync_timestamp=1566009952956&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fqs%2Fdownload%2Fqs-6.8.0.tgz#87b763f0d37ca54200334cd57bb2ef8f68a1d081"
-  integrity sha1-h7dj8NN8pUIAM0zVe7Lvj2ih0IE=
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.8.0.tgz#87b763f0d37ca54200334cd57bb2ef8f68a1d081"
+  integrity sha512-tPSkj8y92PfZVbinY1n84i1Qdx75lZjMQYx9WZhnkofyxzw2r7Ho39G3/aEvSUdebxpnnM4LZJCtvE/Aq3+s9w==
 
 qs@~6.5.2:
   version "6.5.2"
