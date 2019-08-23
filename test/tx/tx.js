@@ -107,6 +107,7 @@ describe('Tx_new', () => {
                 MAX_TX_TO_NAME_LENGTH,
             ),
         },
+        {field: 'toName', configData: 'testname\ndads\n', error: errors.InvalidToName()},
         {field: 'sigs', configData: [], result: []},
         {field: 'sigs', configData: ['0'], result: ['0x0']},
         {field: 'sigs', configData: ['1'], result: ['0x1']},
