@@ -1,11 +1,11 @@
 import {assert} from 'chai'
 import {testAddr, testPrivate, txInfo} from '../../datas'
-import {signNoGas} from '../../../lib/tx/sign_methods'
+import {createNoGas} from '../../../lib/tx/sign_methods'
 import GasReimbursementTx from '../../../lib/tx/special_tx/gas_reimbursement_tx'
 import errors from '../../../lib/errors'
 
 describe('GasReimbursementTx_new', () => {
-    const noGasInfo = signNoGas(testPrivate, txInfo.txConfig, testAddr)
+    const noGasInfo = createNoGas(txInfo.txConfig, testAddr)
     const info = JSON.parse(noGasInfo)
     it('normal', () => {
         const tx = new GasReimbursementTx(info, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
@@ -15,7 +15,7 @@ describe('GasReimbursementTx_new', () => {
     })
 })
 describe('other gasPrice', () => {
-    const noGasInfo = signNoGas(testPrivate, txInfo.txConfig, testAddr)
+    const noGasInfo = createNoGas(txInfo.txConfig, testAddr)
     const info = JSON.parse(noGasInfo)
     const tests = [
         {filed: 'gasPrice', configData: 1},
@@ -44,7 +44,7 @@ describe('other gasPrice', () => {
     })
 })
 describe('other gasLimit', () => {
-    const noGasInfo = signNoGas(testPrivate, txInfo.txConfig, testAddr)
+    const noGasInfo = createNoGas(txInfo.txConfig, testAddr)
     const info = JSON.parse(noGasInfo)
     const tests = [
         {filed: 'gasLimit', configData: 1},
