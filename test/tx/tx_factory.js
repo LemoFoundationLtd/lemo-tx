@@ -267,12 +267,11 @@ describe('createBoxTx', () => {
         }
         const modifyAsset = createModifyAsset(bigTxInfo.txConfig, ModifyAssetInfo)
         // subTxInfo: one is string and the other is a object. Same expirationTime
-        const subTxList = [asset, JSON.parse(modifyAsset)]
-        console.log(subTxList)
+        const subTxList = [asset, modifyAsset]
         const result = createBoxTx(txInfo.txConfig, subTxList)
         assert.deepEqual(JSON.parse(result).to, undefined)
-        assert.deepEqual(parseHexObject(JSON.parse(result).data).subTxList[1], subTxList[1])
-        assert.deepEqual(JSON.parse(result).expirationTime, subTxList[1].expirationTime)
+        assert.deepEqual(parseHexObject(JSON.parse(result).data).subTxList[1], JSON.parse(subTxList[1]))
+        assert.deepEqual(JSON.parse(result).expirationTime, JSON.parse(subTxList[1]).expirationTime)
     })
     it('boxTx_time_different', () => {
         // sign replenish Asset tx
