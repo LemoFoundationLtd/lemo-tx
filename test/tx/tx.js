@@ -11,9 +11,9 @@ describe('Tx_new', () => {
             new Tx({})
         }, errors.TXInvalidChainID())
     })
-
     it('minimal config', () => {
         const tx = new Tx({chainID, from: testAddr})
+        console.log(tx)
         assert.equal(tx.type, TxType.ORDINARY)
         assert.equal(tx.version, TX_VERSION)
         assert.equal(tx.chainID, chainID)
