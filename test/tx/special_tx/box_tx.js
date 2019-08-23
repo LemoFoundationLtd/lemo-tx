@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import {toBuffer} from 'lemo-utils'
 import {chainID, testAddr, testPrivate, txInfo} from '../../datas'
-import {createVote, createTempAddress} from '../../../lib/tx/sign_methods'
+import {createVote, createTempAddress} from '../../../lib/tx/tx_factory'
 import BoxTx from '../../../lib/tx/special_tx/box_tx'
 import {TxType} from '../../../lib/const'
 import errors from '../../../lib/errors'

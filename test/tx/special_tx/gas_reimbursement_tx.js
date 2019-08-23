@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import {testAddr, testPrivate, txInfo} from '../../datas'
-import {createNoGas} from '../../../lib/tx/sign_methods'
+import {createNoGas} from '../../../lib/tx/tx_factory'
 import GasReimbursementTx from '../../../lib/tx/special_tx/gas_reimbursement_tx'
 import errors from '../../../lib/errors'
 

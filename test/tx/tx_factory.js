@@ -23,7 +23,7 @@ import {
     createModifySigners,
     createBoxTx,
     createContractCreation,
-} from '../../lib/tx/sign_methods'
+} from '../../lib/tx/tx_factory'
 import errors from '../../lib/errors'
 import {TxType} from '../../lib/const'
 
