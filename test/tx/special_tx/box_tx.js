@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import {toBuffer} from 'lemo-utils'
 import {chainID, testAddr, testPrivate, txInfo} from '../../datas'
-import {signVote, signCreateTempAddress} from '../../../lib/tx/sign_methods'
+import {createVote, createTempAddress} from '../../../lib/tx/tx_factory'
 import BoxTx from '../../../lib/tx/special_tx/box_tx'
 import {TxType} from '../../../lib/const'
 import errors from '../../../lib/errors'
@@ -10,9 +10,9 @@ describe('box_tx', () => {
     // normal situation
     it('box_specialTx_normal', () => {
         // sign temp address
-        const tempAddress = signCreateTempAddress(testPrivate, txInfo.txConfig, '01234567')
+        const tempAddress = createTempAddress(txInfo.txConfig, '01234567')
         // sign vote: this method has no data
-        const vote = signVote(testPrivate, txInfo.txConfig)
+        const vote = createVote(txInfo.txConfig)
         const subTxList = [tempAddress, vote]
         const tx = new BoxTx({chainID, from: testAddr}, subTxList)
         assert.equal(tx.type, TxType.BOX_TX)
@@ -31,7 +31,7 @@ describe('box_tx', () => {
                 amount: '0',
                 expirationTime: '1544584596',
                 sigs: ['0x9c9f62a8fe923c093b408141a4af6b2116969e13e09920dc789cad5b4601a9526ef9c0242520a22579385ede9a91c1480c936c35f55aed6bb0deca570a7e932101'],
-                gasPayerSigs: []
+                gasPayerSigs: [],
             },
             {
                 type: 0,

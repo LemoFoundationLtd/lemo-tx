@@ -10,20 +10,20 @@ import {
 } from '../datas'
 import {
     sign,
-    signVote,
-    signCandidate,
-    signCreateAsset,
-    signIssueAsset,
-    signTransferAsset,
-    signReplenishAsset,
-    signModifyAsset,
-    signNoGas,
-    signReimbursement,
-    signCreateTempAddress,
-    signModifySigners,
-    signBoxTx,
-    signContractCreation,
-} from '../../lib/tx/sign_methods'
+    createVote,
+    createCandidate,
+    createAsset,
+    createIssueAsset,
+    createTransferAsset,
+    createReplenishAsset,
+    createModifyAsset,
+    createNoGas,
+    createReimbursement,
+    createTempAddress,
+    createModifySigners,
+    createBoxTx,
+    createContractCreation,
+} from '../../lib/tx/tx_factory'
 import errors from '../../lib/errors'
 import {TxType} from '../../lib/const'
 
@@ -39,10 +39,10 @@ describe('sign', () => {
     })
 })
 
-describe('signVote', () => {
-    it('signVote_normal', () => {
+describe('createVote', () => {
+    it('createVote_normal', () => {
         txInfos.forEach((test, i) => {
-            let json = signVote(testPrivate, test.txConfig)
+            let json = createVote(test.txConfig)
             json = JSON.parse(json)
             assert.equal(json.type, TxType.VOTE, `index=${i}`)
             assert.equal(json.amount, 0, `index=${i}`)
@@ -51,7 +51,7 @@ describe('signVote', () => {
     })
 })
 
-describe('signCandidate', () => {
+describe('createCandidate', () => {
     it('signCandidate_normal', () => {
         txInfos.forEach((test, i) => {
             const candidateInfo = {
@@ -63,7 +63,7 @@ describe('signCandidate', () => {
                 port: '7001',
                 introduction: 'abcde',
             }
-            let json = signCandidate(testPrivate, test.txConfig, candidateInfo)
+            let json = createCandidate(test.txConfig, candidateInfo)
             json = JSON.parse(json)
             assert.equal(json.type, TxType.CANDIDATE, `index=${i}`)
             const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
@@ -74,8 +74,8 @@ describe('signCandidate', () => {
     })
 })
 
-describe('signCreateAsset', () => {
-    it('signCreateAsset_normal', () => {
+describe('createAsset', () => {
+    it('createAsset_normal', () => {
         txInfos.forEach((test, i) => {
             const createAssetInfo = {
                 category: 1,
@@ -89,7 +89,7 @@ describe('signCreateAsset', () => {
                     suggestedGasLimit: '60000',
                 },
             }
-            let json = signCreateAsset(testPrivate, test.txConfig, createAssetInfo)
+            let json = createAsset(test.txConfig, createAssetInfo)
             json = JSON.parse(json)
             assert.equal(json.type, TxType.CREATE_ASSET, `index=${i}`)
             const result = JSON.stringify({...createAssetInfo, profile: {...createAssetInfo.profile, freeze: 'false'}})
@@ -101,8 +101,8 @@ describe('signCreateAsset', () => {
     })
 })
 
-describe('signIssueAsset', () => {
-    it('signIssueAsset_normal', () => {
+describe('createIssueAsset', () => {
+    it('createIssueAsset_normal', () => {
         txInfos.forEach((test, i) => {
             const txConfig = {...test.txConfig}
             if (!txConfig.to) {
@@ -113,7 +113,7 @@ describe('signIssueAsset', () => {
                 metaData: 'issue asset metaData',
                 supplyAmount: '100000',
             }
-            let json = signIssueAsset(testPrivate, txConfig, issueAssetInfo)
+            let json = createIssueAsset(txConfig, issueAssetInfo)
             json = JSON.parse(json)
             assert.equal(json.type, TxType.ISSUE_ASSET, `index=${i}`)
             const result = JSON.stringify({...issueAssetInfo})
@@ -124,15 +124,15 @@ describe('signIssueAsset', () => {
     })
 })
 
-describe('signReplenishAsset', () => {
-    it('signReplenishAsset_normal', () => {
+describe('createReplenishAsset', () => {
+    it('createReplenishAsset_normal', () => {
         txInfos.forEach((test, i) => {
             const replenishAssetInfo = {
                 assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 replenishAmount: '100000',
             }
-            let json = signReplenishAsset(testPrivate, test.txConfig, replenishAssetInfo)
+            let json = createReplenishAsset(test.txConfig, replenishAssetInfo)
             json = JSON.parse(json)
             assert.equal(json.type, TxType.REPLENISH_ASSET, `index=${i}`)
             const result = JSON.stringify({...replenishAssetInfo})
@@ -153,7 +153,7 @@ describe('signModifyAsset', () => {
                     description: 'demo asset',
                 },
             }
-            let json = signModifyAsset(testPrivate, test.txConfig, ModifyAssetInfo)
+            let json = createModifyAsset(test.txConfig, ModifyAssetInfo)
             json = JSON.parse(json)
             assert.equal(json.type, TxType.MODIFY_ASSET, `index=${i}`)
             const result = JSON.stringify({...ModifyAssetInfo})
@@ -162,8 +162,8 @@ describe('signModifyAsset', () => {
     })
 })
 
-describe('signTransferAsset', () => {
-    it('signTransferAsset_normal', () => {
+describe('createTransferAsset', () => {
+    it('createTransferAsset_normal', () => {
         const tests = [
             {...txInfos[0].txConfig, amount: 0},
             {...txInfos[1].txConfig, to: 'Lemobw'},
@@ -174,7 +174,7 @@ describe('signTransferAsset', () => {
                 assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 transferAmount: '110000',
             }
-            let json = signTransferAsset(testPrivate, test, transferAsset)
+            let json = createTransferAsset(test, transferAsset)
             json = JSON.parse(json)
             assert.equal(json.type, TxType.TRANSFER_ASSET, `index=${i}`)
             const result = JSON.stringify({...transferAsset})
@@ -185,60 +185,62 @@ describe('signTransferAsset', () => {
     })
 })
 
-describe('signNoGas', () => {
-    it('signNoGas_normal', () => {
+describe('createNoGas', () => {
+    it('createNoGas_normal', () => {
         const txConfig = {
             ...txInfo.txConfig,
         }
-        const noGasInfo = signNoGas(testPrivate, txConfig, testAddr)
-        assert.equal(JSON.parse(noGasInfo).type, txConfig.type)
-        assert.equal(JSON.parse(noGasInfo).gasPayer, testAddr)
-        assert.equal(JSON.parse(noGasInfo).toName, txConfig.toName)
+        const tx = createNoGas(txConfig, testAddr)
+        tx.signNoGasWith(testPrivate)
+        assert.equal(JSON.parse(tx.toString()).type, txConfig.type)
+        assert.equal(JSON.parse(tx.toString()).gasPayer, testAddr)
+        assert.equal(JSON.parse(tx.toString()).toName, txConfig.toName)
     })
 })
 
-describe('signReimbursement', () => {
-    it('signReimbursement_normal', () => {
-        const noGasInfo = signNoGas(testPrivate, txInfo.txConfig, testAddr)
-        const result = signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
+describe('createReimbursement', () => {
+    it('createReimbursement_normal', () => {
+        const noGasInfo = createNoGas(txInfo.txConfig, testAddr).signNoGasWith(testPrivate)
+        const result = createReimbursement(noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit).signGasWith(testPrivate)
+        // result.signWith(testPrivate, result)
         assert.deepEqual(JSON.parse(result).gasPayerSigs, txInfo.gasAfterSign)
         assert.equal(JSON.parse(result).gasLimit, txInfo.txConfig.gasLimit)
         assert.equal(JSON.parse(result).gasPrice, txInfo.txConfig.gasPrice)
     })
     it('signReimbursement_payer_error', () => {
         const gasPayer = 'Lemo839J9N2H8QWS4JSSPCZZ4DTGGA9C8PC49YB8'
-        const noGasInfo = signNoGas(testPrivate, txInfo.txConfig, gasPayer)
+        const noGasInfo = createNoGas(txInfo.txConfig, gasPayer)
         assert.throws(() => {
-            signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
+            createReimbursement(noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
         }, errors.InvalidAddressConflict(gasPayer))
     })
 })
 
-describe('signCreateTempAddress', () => {
-    it('signCreateTempAddress_normal', () => {
+describe('createTempAddress', () => {
+    it('createTempAddress_normal', () => {
         const userId = '0123456789'
-        const result = signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
+        const result = createTempAddress(txInfo.txConfig, userId)
         assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
     })
     it('signCreateTempAddress_userID_short', () => {
         const userId = '112'
-        const result = signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
+        const result = createTempAddress(txInfo.txConfig, userId)
         assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
     })
     it('signCreateTempAddress_userID_long', () => {
         const userId = '100000000000000000002'
         assert.throws(() => {
-            signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
+            createTempAddress(txInfo.txConfig, userId)
         }, errors.TXInvalidUserIdLength())
     })
     it('signCreateTempAddress_contrast_from', () => {
-        const result = signCreateTempAddress(testPrivate, txInfo.txConfig, '0123456789')
+        const result = createTempAddress(txInfo.txConfig, '0123456789')
         const codeAddress = decodeAddress(JSON.parse(result).to)
         const codeFrom = decodeAddress(txInfo.txConfig.from)
         assert.equal(codeAddress.slice(4, 22), codeFrom.substring(codeFrom.length - 18))
     })
 })
-describe('signBoxTx', () => {
+describe('createBoxTx', () => {
     it('boxTx_normal', () => {
         // sign create Asset tx
         const createAssetInfo = {
@@ -253,7 +255,7 @@ describe('signBoxTx', () => {
                 suggestedGasLimit: '60000',
             },
         }
-        const createAsset = signCreateAsset(testPrivate, emptyTxInfo.txConfig, createAssetInfo)
+        const asset = createAsset(emptyTxInfo.txConfig, createAssetInfo)
         // sign modify Asset tx
         const ModifyAssetInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
@@ -263,13 +265,13 @@ describe('signBoxTx', () => {
                 description: 'demo asset',
             },
         }
-        const modifyAsset = signModifyAsset(testPrivate, bigTxInfo.txConfig, ModifyAssetInfo)
+        const modifyAsset = createModifyAsset(bigTxInfo.txConfig, ModifyAssetInfo)
         // subTxInfo: one is string and the other is a object. Same expirationTime
-        const subTxList = [createAsset, JSON.parse(modifyAsset)]
-        const result = signBoxTx(testPrivate, txInfo.txConfig, subTxList)
+        const subTxList = [asset, modifyAsset]
+        const result = createBoxTx(txInfo.txConfig, subTxList)
         assert.deepEqual(JSON.parse(result).to, undefined)
-        assert.deepEqual(parseHexObject(JSON.parse(result).data).subTxList[1], subTxList[1])
-        assert.deepEqual(JSON.parse(result).expirationTime, subTxList[1].expirationTime)
+        assert.deepEqual(parseHexObject(JSON.parse(result).data).subTxList[1], JSON.parse(subTxList[1]))
+        assert.deepEqual(JSON.parse(result).expirationTime, JSON.parse(subTxList[1]).expirationTime)
     })
     it('boxTx_time_different', () => {
         // sign replenish Asset tx
@@ -282,7 +284,7 @@ describe('signBoxTx', () => {
             ...txInfo.txConfig,
             expirationTime: 1560513710327,
         }
-        const replenishAsset = signReplenishAsset(testPrivate, txConfig, replenishAssetInfo)
+        const replenishAsset = createReplenishAsset(testPrivate, txConfig, replenishAssetInfo)
         // sign modify Asset tx
         const ModifyAssetInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
@@ -296,36 +298,36 @@ describe('signBoxTx', () => {
             ...bigTxInfo.txConfig,
             expirationTime: 1544584598,
         }
-        const modifyAsset = signModifyAsset(testPrivate, modifyTxConfig, ModifyAssetInfo)
+        const modifyAsset = createModifyAsset(modifyTxConfig, ModifyAssetInfo)
         // subTxInfo: two data are object. expirationTime is different
         const subTxList = [replenishAsset, modifyAsset]
-        const result = signBoxTx(testPrivate, txInfo.txConfig, subTxList)
+        const result = createBoxTx(txInfo.txConfig, subTxList)
         // Compare the size of the expirationTime within a transaction
         const time = parseHexObject(JSON.parse(result).data).subTxList.map(item => item.expirationTime)
         assert.deepEqual(JSON.parse(result).expirationTime, Math.min(...time).toString())
     })
     it('box_tx_include_box', () => {
         // sign temp address
-        const tempAddress = signCreateTempAddress(testPrivate, txInfo.txConfig, '01234567')
+        const tempAddress = createTempAddress(txInfo.txConfig, '01234567')
         // sign ordinary tx
         const ordinary = sign(testPrivate, emptyTxInfo.txConfig)
         const subTxList = [tempAddress, ordinary]
         // first sign box Tx
-        const boxTx = signBoxTx(testPrivate, txInfo.txConfig, subTxList)
+        const boxTx = createBoxTx(txInfo.txConfig, subTxList)
         const subTxLists = [tempAddress, ordinary, boxTx]
         assert.throws(() => {
             // two sign box Tx
-            signBoxTx(testPrivate, txInfo.txConfig, subTxLists)
+            createBoxTx(txInfo.txConfig, subTxLists)
         }, errors.InvalidBoxTransaction())
     })
 })
 
-describe('signContractCreation', () => {
+describe('createContractCreation', () => {
     // normal
     it('Contract_creation_normal', () => {
         const codeHex = '0x1003330000001'
         const constructorArgsHex = '0x000000001'
-        const result = signContractCreation(testPrivate, txInfo.txConfig, codeHex, constructorArgsHex)
+        const result = createContractCreation(txInfo.txConfig, codeHex, constructorArgsHex)
         assert.deepEqual(JSON.parse(result).type, TxType.CREATE_CONTRACT.toString())
         assert.deepEqual(JSON.parse(result).data.slice(0, codeHex.length), codeHex)
         const data = JSON.parse(result).data
@@ -336,7 +338,7 @@ describe('signContractCreation', () => {
         const codeHex = '0x000gbfdfggh000001'
         const constructorArgsHex = '0x000000001'
         assert.throws(() => {
-            signContractCreation(testPrivate, txInfo.txConfig, codeHex, constructorArgsHex)
+            createContractCreation(txInfo.txConfig, codeHex, constructorArgsHex)
         }, errors.TXMustBeNumber('codeHex', '0x000gbfdfggh000001'))
     })
     // codeHex is number
@@ -344,12 +346,12 @@ describe('signContractCreation', () => {
         const codeHex = 23455467
         const constructorArgsHex = '0x000000001'
         assert.throws(() => {
-            signContractCreation(testPrivate, txInfo.txConfig, codeHex, constructorArgsHex)
+            createContractCreation(txInfo.txConfig, codeHex, constructorArgsHex)
         }, errors.TXInvalidType('codeHex', 23455467, ['string']))
     })
 })
 
-describe('signModifySigners', () => {
+describe('createModifySigners', () => {
     // normal
     it('Contract_creation_normal', () => {
         const signers = [{
@@ -359,7 +361,7 @@ describe('signModifySigners', () => {
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             weight: 60,
         }]
-        let result = signModifySigners(testPrivate, txInfo.txConfig, signers)
+        let result = createModifySigners(txInfo.txConfig, signers)
         result = JSON.parse(result)
         const signerData = parseHexObject(result.data)
         assert.equal(result.type, TxType.MODIFY_SIGNER.toString())
@@ -375,7 +377,7 @@ describe('signModifySigners', () => {
             weight: 60,
         }]
         assert.throws(() => {
-            signModifySigners(testPrivate, txInfo.txConfig, signers)
+            createModifySigners(txInfo.txConfig, signers)
         }, errors.InvalidAddress(''))
     })
     // no weight
@@ -387,7 +389,7 @@ describe('signModifySigners', () => {
             weight: 60,
         }]
         assert.throws(() => {
-            signModifySigners(testPrivate, txInfo.txConfig, signers)
+            createModifySigners(txInfo.txConfig, signers)
         }, errors.TXInvalidType('signers[0].weight', undefined, ['number']))
     })
 })

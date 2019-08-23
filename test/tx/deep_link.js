@@ -100,7 +100,6 @@ describe('parse_deep_link', () => {
     })
     it('chainID_url', () => {
         const url = 'lemo://pay/tx?f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
-        console.log(LemoTx.parseDeepLink(url))
         assert.deepEqual(LemoTx.parseDeepLink(url), {chainID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'})
     })
 })

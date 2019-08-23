@@ -36,7 +36,7 @@ console.log(tx.toString())
 ## LemoTx API
 
 API | description
----|---|---|---
+---|---
 [new LemoTx(txInfo)](#tx-sign) | Create a transaction 
 [tx.signWith(privateKey)](#tx-signWith) | Sign transaction 
 [tx.hash()](#tx-hash) | Calculate hash of the transaction 
@@ -145,7 +145,7 @@ Asset information
 }
 ```
 - `category` Asset type
-- `decimal` The decimal place of the issued asset, which indicates how many digits are reduced to the decimal point. The default is 18 digits.
+- `decimal` The decimal place of the issued asset, which indicates how many digits are reduced to the decimal point. The default is 18 digits. Decimal cannot be greater than 18
 - `totalSupply` The total amount of assets issued, when the assets are issued and destroyed, the total amount of assets will change in real time, the total amount of assets issued is `issuance*10^decimal`
 - `isReplenishable` Whether the asset can be replenish. It is not changeable after setup when creating the asset. The default is `true`
 - `isDivisible` Whether the asset is divisible, set when the asset is created, the default is `true`

@@ -11,9 +11,9 @@ describe('Tx_new', () => {
             new Tx({})
         }, errors.TXInvalidChainID())
     })
-
     it('minimal config', () => {
         const tx = new Tx({chainID, from: testAddr})
+        console.log(tx)
         assert.equal(tx.type, TxType.ORDINARY)
         assert.equal(tx.version, TX_VERSION)
         assert.equal(tx.chainID, chainID)
@@ -107,6 +107,7 @@ describe('Tx_new', () => {
                 MAX_TX_TO_NAME_LENGTH,
             ),
         },
+        {field: 'toName', configData: 'testname\ndads\n', error: errors.InvalidToName()},
         {field: 'sigs', configData: [], result: []},
         {field: 'sigs', configData: ['0'], result: ['0x0']},
         {field: 'sigs', configData: ['1'], result: ['0x1']},
