@@ -27,7 +27,7 @@ function umdConfig(name) {
             }),
             // use resolve so Rollup can find external libraries
             // set browser to true so we could load the 'browser' field of libraries' package.json
-            resolve({browser: true}),
+            resolve({browser: true, preferBuiltins: true}),
             // use commonjs so Rollup can convert external libraries to an ES module
             commonjs(),
             babel({
