@@ -5,15 +5,19 @@ import {createVote, createTempAddress} from '../../../lib/tx/tx_factory'
 import BoxTx from '../../../lib/tx/special_tx/box_tx'
 import {TxType} from '../../../lib/const'
 import errors from '../../../lib/errors'
+import lemoTx from '../../../lib/index'
 
 describe('box_tx', () => {
     // normal situation
     it('box_specialTx_normal', () => {
         // sign temp address
         const tempAddress = createTempAddress(txInfo.txConfig, '01234567')
+        const signTemp = lemoTx.sign(testPrivate, tempAddress)
         // sign vote: this method has no data
         const vote = createVote(txInfo.txConfig)
-        const subTxList = [tempAddress, vote]
+        // need sign before put it in subTxList
+        const signVote = lemoTx.sign(testPrivate, vote)
+        const subTxList = [signTemp, signVote]
         const tx = new BoxTx({chainID, from: testAddr}, subTxList)
         assert.equal(tx.type, TxType.BOX_TX)
         assert.deepEqual(JSON.parse(toBuffer(tx.data).toString()).subTxList[0].sigs, JSON.parse(subTxList[0]).sigs)
@@ -43,7 +47,7 @@ describe('box_tx', () => {
                 amount: '0',
                 expirationTime: '1544584596',
                 sigs: ['0x9c9f62a8fe923c093b408141a4af6b2116969e13e09920dc789cad5b4601a9526ef9c0242520a22579385ede9a91c1480c936c35f55aed6bb0deca570a7e932101'],
-                gasPayerSigs: []
+                gasPayerSigs: [],
             }]
         assert.throws(() => {
             // two sign box Tx
