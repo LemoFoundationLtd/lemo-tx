@@ -9,11 +9,10 @@ describe('Tx_new', () => {
     it('empty config', () => {
         assert.throws(() => {
             new Tx({})
-        }, errors.TXInvalidChainID())
+        }, errors.TXFieldCanNotEmpty('from'))
     })
     it('minimal config', () => {
         const tx = new Tx({chainID, from: testAddr})
-        console.log(tx)
         assert.equal(tx.type, TxType.ORDINARY)
         assert.equal(tx.version, TX_VERSION)
         assert.equal(tx.chainID, chainID)
@@ -64,13 +63,88 @@ describe('Tx_new', () => {
         assert.equal(tx.from, config.from)
     })
 
+    it('Tx_from', () => {
+        const obj = {
+            chainID: '1',
+            expirationTime: '1541649536',
+            from: testAddr,
+        }
+        const tx = new Tx(obj)
+        tx.sig = new Signer().sign(tx, testPrivate)
+        assert.equal(tx.from, obj.from)
+        assert.equal(typeof tx.from, 'string')
+    })
+    it('Tx_no_from', () => {
+        const obj = {
+            chainID: '1',
+            expirationTime: '1541649536',
+        }
+        assert.throws(() => {
+            new Tx(obj)
+        }, errors.TXFieldCanNotEmpty('from'))
+    })
+})
+
+describe('Tx_serialize', () => {
+    it('without signature', () => {
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
+            assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlp, `inedx=${i}`)
+        })
+    })
+    it('with signature', () => {
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
+            tx.signWith(testPrivate)
+            assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
+        })
+    })
+})
+
+describe('Tx_hash', () => {
+    it('without signature', () => {
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
+            assert.equal(tx.hash(), test.hash, `index=${i}`)
+        })
+    })
+    it('with signature', () => {
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
+            tx.signWith(testPrivate)
+            assert.equal(tx.hash(), test.hashAfterSign, `index=${i}`)
+        })
+    })
+})
+
+describe('Tx_expirationTime', () => {
+    it('default expiration', () => {
+        const before = Math.floor(Date.now() / 1000)
+        const tx = new Tx({chainID, from: testAddr})
+        const after = Math.floor(Date.now() / 1000)
+        assert.isAtLeast(tx.expirationTime, before + TTTL)
+        assert.isAtMost(tx.expirationTime, after + TTTL)
+    })
+})
+
+describe('Tx_signWith', () => {
+    it('sigWith_sigs_length', () => {
+        const tx = new Tx(emptyTxInfo.txConfig)
+        assert.equal(emptyTxInfo.txConfig.sigs, undefined)
+        tx.signWith(testPrivate)
+        assert.equal(tx.sigs.length, 1)
+        tx.signWith(testPrivate)
+        assert.equal(tx.sigs.length, 1)
+    })
+})
+describe('all config', () => {
     const tests = [
         {field: 'chainID', configData: 1},
         {field: 'chainID', configData: 100},
         {field: 'chainID', configData: '10000', result: 10000},
         {field: 'chainID', configData: 'abc', error: errors.TXMustBeNumber('chainID', 'abc')},
-        {field: 'chainID', configData: '', error: errors.TXInvalidChainID()},
-        {field: 'chainID', configData: 0, error: errors.TXInvalidChainID()},
+        {field: 'chainID', configData: '', result: NaN},
+        {field: 'chainID', configData: 0, result: 0},
         {field: 'chainID', configData: '0x10000', error: errors.TXInvalidRange('chainID', '0x10000', 1, 0xffff)},
         {field: 'type', configData: 0},
         {field: 'type', configData: 1},
@@ -170,79 +244,5 @@ describe('Tx_new', () => {
                 }
             }
         })
-    })
-
-    it('Tx_from', () => {
-        const obj = {
-            chainID: '1',
-            expirationTime: '1541649536',
-            from: testAddr,
-        }
-        const tx = new Tx(obj)
-        tx.sig = new Signer().sign(tx, testPrivate)
-        assert.equal(tx.from, obj.from)
-        assert.equal(typeof tx.from, 'string')
-    })
-    it('Tx_no_from', () => {
-        const obj = {
-            chainID: '1',
-            expirationTime: '1541649536',
-        }
-        assert.throws(() => {
-            new Tx(obj)
-        }, errors.TXFieldCanNotEmpty('from'))
-    })
-})
-
-describe('Tx_serialize', () => {
-    it('without signature', () => {
-        txInfos.forEach((test, i) => {
-            const tx = new Tx(test.txConfig)
-            assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlp, `inedx=${i}`)
-        })
-    })
-    it('with signature', () => {
-        txInfos.forEach((test, i) => {
-            const tx = new Tx(test.txConfig)
-            tx.signWith(testPrivate)
-            assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
-        })
-    })
-})
-
-describe('Tx_hash', () => {
-    it('without signature', () => {
-        txInfos.forEach((test, i) => {
-            const tx = new Tx(test.txConfig)
-            assert.equal(tx.hash(), test.hash, `index=${i}`)
-        })
-    })
-    it('with signature', () => {
-        txInfos.forEach((test, i) => {
-            const tx = new Tx(test.txConfig)
-            tx.signWith(testPrivate)
-            assert.equal(tx.hash(), test.hashAfterSign, `index=${i}`)
-        })
-    })
-})
-
-describe('Tx_expirationTime', () => {
-    it('default expiration', () => {
-        const before = Math.floor(Date.now() / 1000)
-        const tx = new Tx({chainID, from: testAddr})
-        const after = Math.floor(Date.now() / 1000)
-        assert.isAtLeast(tx.expirationTime, before + TTTL)
-        assert.isAtMost(tx.expirationTime, after + TTTL)
-    })
-})
-
-describe('Tx_signWith', () => {
-    it('sigWith_sigs_length', () => {
-        const tx = new Tx(emptyTxInfo.txConfig)
-        assert.equal(emptyTxInfo.txConfig.sigs, undefined)
-        tx.signWith(testPrivate)
-        assert.equal(tx.sigs.length, 1)
-        tx.signWith(testPrivate)
-        assert.equal(tx.sigs.length, 1)
     })
 })

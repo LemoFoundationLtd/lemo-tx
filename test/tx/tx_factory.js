@@ -1,5 +1,6 @@
 import {assert} from 'chai'
 import {decodeUtf8Hex, toBuffer, encodeAddress, decodeAddress} from 'lemo-utils'
+import LemoTx from '../../lib/index'
 import {
     txInfos,
     testPrivate,
@@ -9,7 +10,6 @@ import {
     bigTxInfo,
 } from '../datas'
 import {
-    sign,
     createVote,
     createCandidate,
     createAsset,
@@ -33,7 +33,7 @@ function parseHexObject(hex) {
 
 describe('sign', () => {
     it('sign_normal', () => {
-        let result = sign(testPrivate, bigTxInfo.txConfig)
+        let result = LemoTx.sign(testPrivate, bigTxInfo.txConfig)
         result = JSON.parse(result)
         assert.equal(result.from, bigTxInfo.txConfig.from)
     })
@@ -200,19 +200,21 @@ describe('createNoGas', () => {
 
 describe('createReimbursement', () => {
     it('createReimbursement_normal', () => {
-        const noGasInfo = createNoGas(txInfo.txConfig, testAddr).signNoGasWith(testPrivate)
-        const result = createReimbursement(noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit).signGasWith(testPrivate)
-        // result.signWith(testPrivate, result)
+        const noGasInfo = createNoGas(txInfo.txConfig, testAddr)
+        noGasInfo.signNoGasWith(testPrivate)
+        const result = createReimbursement(noGasInfo.toString(), txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
+        result.signGasWith(testPrivate)
+        result.toString()
         assert.deepEqual(JSON.parse(result).gasPayerSigs, txInfo.gasAfterSign)
         assert.equal(JSON.parse(result).gasLimit, txInfo.txConfig.gasLimit)
         assert.equal(JSON.parse(result).gasPrice, txInfo.txConfig.gasPrice)
     })
-    it('signReimbursement_payer_error', () => {
+    it('signReimbursement_payer', () => {
         const gasPayer = 'Lemo839J9N2H8QWS4JSSPCZZ4DTGGA9C8PC49YB8'
         const noGasInfo = createNoGas(txInfo.txConfig, gasPayer)
-        assert.throws(() => {
-            createReimbursement(noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
-        }, errors.InvalidAddressConflict(gasPayer))
+        noGasInfo.signNoGasWith(testPrivate)
+        const result = createReimbursement(noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
+        assert.equal(result.gasPayer, gasPayer)
     })
 })
 
@@ -256,6 +258,7 @@ describe('createBoxTx', () => {
             },
         }
         const asset = createAsset(emptyTxInfo.txConfig, createAssetInfo)
+        const signAsset = LemoTx.sign(testPrivate, asset)
         // sign modify Asset tx
         const ModifyAssetInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
@@ -266,8 +269,9 @@ describe('createBoxTx', () => {
             },
         }
         const modifyAsset = createModifyAsset(bigTxInfo.txConfig, ModifyAssetInfo)
+        const signModifyAsset = LemoTx.sign(testPrivate, modifyAsset)
         // subTxInfo: one is string and the other is a object. Same expirationTime
-        const subTxList = [asset, modifyAsset]
+        const subTxList = [signAsset, signModifyAsset]
         const result = createBoxTx(txInfo.txConfig, subTxList)
         assert.deepEqual(JSON.parse(result).to, undefined)
         assert.deepEqual(parseHexObject(JSON.parse(result).data).subTxList[1], JSON.parse(subTxList[1]))
@@ -284,7 +288,8 @@ describe('createBoxTx', () => {
             ...txInfo.txConfig,
             expirationTime: 1560513710327,
         }
-        const replenishAsset = createReplenishAsset(testPrivate, txConfig, replenishAssetInfo)
+        const replenishAsset = createReplenishAsset(txConfig, replenishAssetInfo)
+        const signReplenishAsset = LemoTx.sign(testPrivate, replenishAsset)
         // sign modify Asset tx
         const ModifyAssetInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
@@ -299,8 +304,10 @@ describe('createBoxTx', () => {
             expirationTime: 1544584598,
         }
         const modifyAsset = createModifyAsset(modifyTxConfig, ModifyAssetInfo)
+        const signModifyAsset = LemoTx.sign(testPrivate, modifyAsset)
+
         // subTxInfo: two data are object. expirationTime is different
-        const subTxList = [replenishAsset, modifyAsset]
+        const subTxList = [signReplenishAsset, signModifyAsset]
         const result = createBoxTx(txInfo.txConfig, subTxList)
         // Compare the size of the expirationTime within a transaction
         const time = parseHexObject(JSON.parse(result).data).subTxList.map(item => item.expirationTime)
@@ -309,12 +316,14 @@ describe('createBoxTx', () => {
     it('box_tx_include_box', () => {
         // sign temp address
         const tempAddress = createTempAddress(txInfo.txConfig, '01234567')
+        const signTemp = LemoTx.sign(testPrivate, tempAddress)
         // sign ordinary tx
-        const ordinary = sign(testPrivate, emptyTxInfo.txConfig)
-        const subTxList = [tempAddress, ordinary]
+        const ordinary = LemoTx.sign(testPrivate, emptyTxInfo.txConfig)
+        const subTxList = [signTemp, ordinary]
         // first sign box Tx
         const boxTx = createBoxTx(txInfo.txConfig, subTxList)
-        const subTxLists = [tempAddress, ordinary, boxTx]
+        const signBoxTx = LemoTx.sign(testPrivate, boxTx)
+        const subTxLists = [signTemp, ordinary, signBoxTx]
         assert.throws(() => {
             // two sign box Tx
             createBoxTx(txInfo.txConfig, subTxLists)
