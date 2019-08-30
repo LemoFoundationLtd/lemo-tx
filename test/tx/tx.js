@@ -63,116 +63,6 @@ describe('Tx_new', () => {
         assert.equal(tx.from, config.from)
     })
 
-    it('all config', () => {
-        const tests = [
-            {field: 'chainID', configData: 1},
-            {field: 'chainID', configData: 100},
-            {field: 'chainID', configData: '10000', result: 10000},
-            {field: 'chainID', configData: 'abc', error: errors.TXMustBeNumber('chainID', 'abc')},
-            {field: 'chainID', configData: '', result: 1},
-            {field: 'chainID', configData: 0, result: 1},
-            {field: 'chainID', configData: '0x10000', error: errors.TXInvalidRange('chainID', '0x10000', 1, 0xffff)},
-            {field: 'type', configData: 0},
-            {field: 'type', configData: 1},
-            {field: 'type', configData: 0xff},
-            {field: 'type', configData: '', result: 0},
-            {field: 'type', configData: '1', result: 1},
-            {field: 'type', configData: 'abc', error: errors.TXMustBeNumber('type', 'abc')},
-            {field: 'type', configData: -1, error: errors.TXInvalidRange('type', -1, 0, 0xffff)},
-            {field: 'type', configData: 0x10000, error: errors.TXInvalidRange('type', 0x10000, 0, 0xffff)},
-            {field: 'version', configData: 0, result: TX_VERSION},
-            {field: 'version', configData: 1},
-            {field: 'version', configData: 0xff},
-            {field: 'version', configData: '', result: TX_VERSION},
-            {field: 'version', configData: '1', result: 1},
-            {field: 'version', configData: 'abc', error: errors.TXMustBeNumber('version', 'abc')},
-            {field: 'version', configData: -1, error: errors.TXInvalidRange('version', -1, 0, 0xff)},
-            {field: 'version', configData: 0x100, error: errors.TXInvalidRange('version', 0x100, 0, 0xff)},
-            {field: 'to', configData: 0x1, error: errors.TXInvalidType('to', 0x1, ['string'])},
-            {field: 'to', configData: '0x1', result: 'Lemo8888888888888888888888888888888888BW', error: errors.InvalidAddress('0x1')},
-            {field: 'to', configData: 'lemobw'},
-            {field: 'to', configData: 'lemob', error: errors.InvalidAddressCheckSum('lemob')},
-            {
-                field: 'to',
-                configData: 'Lemo9A9JGWQT74H37PSB24RTH6YYHG6W3GCH3CJ8S',
-                error: errors.InvalidAddressLength('Lemo9A9JGWQT74H37PSB24RTH6YYHG6W3GCH3CJ8S'),
-            },
-            {field: 'toName', configData: 'lemo'},
-            {
-                field: 'toName',
-                configData: '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
-                error: errors.TXInvalidMaxLength(
-                    'toName',
-                    '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
-                    MAX_TX_TO_NAME_LENGTH,
-                ),
-            },
-            {field: 'toName', configData: 'testname\ndads\n', error: errors.InvalidToName()},
-            {field: 'sigs', configData: [], result: []},
-            {field: 'sigs', configData: ['0'], result: ['0x0']},
-            {field: 'sigs', configData: ['1'], result: ['0x1']},
-            {field: 'sigs', configData: ['4294967295'], result: ['0x4294967295']},
-            {field: 'sigs', configData: ['0x']},
-            {field: 'sigs', configData: ['0x0']},
-            {field: 'sigs', configData: ['0x1']},
-            {field: 'sigs', configData: ['0xffffffff', '0x12111111']},
-            {field: 'sigs', configData: 1, error: errors.TXInvalidType('sigs', 1, ['array'])},
-            {field: 'sigs', configData: 'abc', error: errors.TXInvalidType('sigs', 'abc', ['array'])},
-            {field: 'sigs', configData: '0xxyz', error: errors.TXInvalidType('sigs', '0xxyz', ['array'])},
-            {field: 'sigs', configData: '-1', error: errors.TXInvalidType('sigs', '-1', ['array'])},
-            {
-                field: 'sigs',
-                configData:
-                    ['0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001'],
-                error: errors.TXInvalidMaxBytes(
-                    'sigs[0]',
-                    '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
-                    TX_SIG_BYTE_LENGTH,
-                    66,
-                ),
-            },
-            {field: 'gasPayerSigs', configData: [], result: []},
-            {field: 'gasPayerSigs', configData: ['0'], result: ['0x0']},
-            {field: 'gasPayerSigs', configData: ['1'], result: ['0x1']},
-            {field: 'gasPayerSigs', configData: ['4294967295'], result: ['0x4294967295']},
-            {field: 'gasPayerSigs', configData: ['0x']},
-            {field: 'gasPayerSigs', configData: ['0x0']},
-            {field: 'gasPayerSigs', configData: ['0x1']},
-            {field: 'gasPayerSigs', configData: ['0xffffffff']},
-            {field: 'gasPayerSigs', configData: 'abc', error: errors.TXInvalidType('gasPayerSigs', 'abc', ['array'])},
-            {field: 'gasPayerSigs', configData: '0xxyz', error: errors.TXInvalidType('gasPayerSigs', '0xxyz', ['array'])},
-            {field: 'gasPayerSigs', configData: '-1', error: errors.TXInvalidType('gasPayerSigs', '-1', ['array'])},
-            {
-                field: 'gasPayerSigs',
-                configData:
-                    ['0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001'],
-                error: errors.TXInvalidMaxBytes(
-                    'gasPayerSigs[0]',
-                    '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
-                    TX_SIG_BYTE_LENGTH,
-                    66,
-                ),
-            },
-        ]
-        tests.forEach(test => {
-            it(`set ${test.field} to ${JSON.stringify(test.configData)}`, () => {
-                const config = {chainID, from: testAddr, [test.field]: test.configData}
-                if (test.error) {
-                    assert.throws(() => {
-                        new Tx(config)
-                    }, test.error)
-                } else {
-                    const tx = new Tx(config)
-                    if (typeof test.result !== 'undefined') {
-                        assert.deepStrictEqual(tx[test.field], test.result)
-                    } else {
-                        assert.deepStrictEqual(tx[test.field], test.configData)
-                    }
-                }
-            })
-        })
-    })
-
     it('Tx_from', () => {
         const obj = {
             chainID: '1',
@@ -245,5 +135,114 @@ describe('Tx_signWith', () => {
         assert.equal(tx.sigs.length, 1)
         tx.signWith(testPrivate)
         assert.equal(tx.sigs.length, 1)
+    })
+})
+describe('all config', () => {
+    const tests = [
+        {field: 'chainID', configData: 1},
+        {field: 'chainID', configData: 100},
+        {field: 'chainID', configData: '10000', result: 10000},
+        {field: 'chainID', configData: 'abc', error: errors.TXMustBeNumber('chainID', 'abc')},
+        {field: 'chainID', configData: '', result: NaN},
+        {field: 'chainID', configData: 0, result: 0},
+        {field: 'chainID', configData: '0x10000', error: errors.TXInvalidRange('chainID', '0x10000', 1, 0xffff)},
+        {field: 'type', configData: 0},
+        {field: 'type', configData: 1},
+        {field: 'type', configData: 0xff},
+        {field: 'type', configData: '', result: 0},
+        {field: 'type', configData: '1', result: 1},
+        {field: 'type', configData: 'abc', error: errors.TXMustBeNumber('type', 'abc')},
+        {field: 'type', configData: -1, error: errors.TXInvalidRange('type', -1, 0, 0xffff)},
+        {field: 'type', configData: 0x10000, error: errors.TXInvalidRange('type', 0x10000, 0, 0xffff)},
+        {field: 'version', configData: 0, result: TX_VERSION},
+        {field: 'version', configData: 1},
+        {field: 'version', configData: 0xff},
+        {field: 'version', configData: '', result: TX_VERSION},
+        {field: 'version', configData: '1', result: 1},
+        {field: 'version', configData: 'abc', error: errors.TXMustBeNumber('version', 'abc')},
+        {field: 'version', configData: -1, error: errors.TXInvalidRange('version', -1, 0, 0xff)},
+        {field: 'version', configData: 0x100, error: errors.TXInvalidRange('version', 0x100, 0, 0xff)},
+        {field: 'to', configData: 0x1, error: errors.TXInvalidType('to', 0x1, ['string'])},
+        {field: 'to', configData: '0x1', result: 'Lemo8888888888888888888888888888888888BW', error: errors.InvalidAddress('0x1')},
+        {field: 'to', configData: 'lemobw'},
+        {field: 'to', configData: 'lemob', error: errors.InvalidAddressCheckSum('lemob')},
+        {
+            field: 'to',
+            configData: 'Lemo9A9JGWQT74H37PSB24RTH6YYHG6W3GCH3CJ8S',
+            error: errors.InvalidAddressLength('Lemo9A9JGWQT74H37PSB24RTH6YYHG6W3GCH3CJ8S'),
+        },
+        {field: 'toName', configData: 'lemo'},
+        {
+            field: 'toName',
+            configData: '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
+            error: errors.TXInvalidMaxLength(
+                'toName',
+                '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
+                MAX_TX_TO_NAME_LENGTH,
+            ),
+        },
+        {field: 'toName', configData: 'testname\ndads\n', error: errors.InvalidToName()},
+        {field: 'sigs', configData: [], result: []},
+        {field: 'sigs', configData: ['0'], result: ['0x0']},
+        {field: 'sigs', configData: ['1'], result: ['0x1']},
+        {field: 'sigs', configData: ['4294967295'], result: ['0x4294967295']},
+        {field: 'sigs', configData: ['0x']},
+        {field: 'sigs', configData: ['0x0']},
+        {field: 'sigs', configData: ['0x1']},
+        {field: 'sigs', configData: ['0xffffffff', '0x12111111']},
+        {field: 'sigs', configData: 1, error: errors.TXInvalidType('sigs', 1, ['array'])},
+        {field: 'sigs', configData: 'abc', error: errors.TXInvalidType('sigs', 'abc', ['array'])},
+        {field: 'sigs', configData: '0xxyz', error: errors.TXInvalidType('sigs', '0xxyz', ['array'])},
+        {field: 'sigs', configData: '-1', error: errors.TXInvalidType('sigs', '-1', ['array'])},
+        {
+            field: 'sigs',
+            configData:
+                ['0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001'],
+            error: errors.TXInvalidMaxBytes(
+                'sigs[0]',
+                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                TX_SIG_BYTE_LENGTH,
+                66,
+            ),
+        },
+        {field: 'gasPayerSigs', configData: [], result: []},
+        {field: 'gasPayerSigs', configData: ['0'], result: ['0x0']},
+        {field: 'gasPayerSigs', configData: ['1'], result: ['0x1']},
+        {field: 'gasPayerSigs', configData: ['4294967295'], result: ['0x4294967295']},
+        {field: 'gasPayerSigs', configData: ['0x']},
+        {field: 'gasPayerSigs', configData: ['0x0']},
+        {field: 'gasPayerSigs', configData: ['0x1']},
+        {field: 'gasPayerSigs', configData: ['0xffffffff']},
+        {field: 'gasPayerSigs', configData: 'abc', error: errors.TXInvalidType('gasPayerSigs', 'abc', ['array'])},
+        {field: 'gasPayerSigs', configData: '0xxyz', error: errors.TXInvalidType('gasPayerSigs', '0xxyz', ['array'])},
+        {field: 'gasPayerSigs', configData: '-1', error: errors.TXInvalidType('gasPayerSigs', '-1', ['array'])},
+        {
+            field: 'gasPayerSigs',
+            configData:
+                ['0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001'],
+            error: errors.TXInvalidMaxBytes(
+                'gasPayerSigs[0]',
+                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                TX_SIG_BYTE_LENGTH,
+                66,
+            ),
+        },
+    ]
+    tests.forEach(test => {
+        it(`set ${test.field} to ${JSON.stringify(test.configData)}`, () => {
+            const config = {chainID, from: testAddr, [test.field]: test.configData}
+            if (test.error) {
+                assert.throws(() => {
+                    new Tx(config)
+                }, test.error)
+            } else {
+                const tx = new Tx(config)
+                if (typeof test.result !== 'undefined') {
+                    assert.deepStrictEqual(tx[test.field], test.result)
+                } else {
+                    assert.deepStrictEqual(tx[test.field], test.configData)
+                }
+            }
+        })
     })
 })

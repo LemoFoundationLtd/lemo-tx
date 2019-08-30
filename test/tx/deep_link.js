@@ -37,15 +37,16 @@ describe('deep_link', () => {
             chainID: 100,
         }
         const result = createDeepLink(txConfig)
-        const paseResult = parseDeepLink(result)
-        assert.equal(paseResult.from, 'Lemo888888888888888888888888888888888888')
-        assert.equal(paseResult.to, txConfig.to)
+        assert.throws(() => {
+            parseDeepLink(result)
+        }, errors.TXFieldCanNotEmpty('from'))
     })
-    // txConfig is empty, return the initial url
+    // txConfig is empty
     it('empty_config', () => {
         const txConfig = {}
-        const result = createDeepLink(txConfig)
-        assert.equal(result, 'lemo://pay/tx?f=Lemo888888888888888888888888888888888888')
+        assert.throws(() => {
+            createDeepLink(txConfig)
+        }, errors.TXFieldCanNotEmpty('txConfig'))
     })
     // Initial url error
     it('url_start_error', () => {
