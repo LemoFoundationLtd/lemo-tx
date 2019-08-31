@@ -205,7 +205,7 @@ tx.signWith(privateKey, txInfo)
 签名交易并返回签名之后的交易信息字符串
 此方法常用来实现离线交易：
 1. 在离线设备上签名交易
-2. 将交易后的信息字符串复制到线上。Copy the output string ( untamable ) to a online device
+2. 将交易后的信息字符串复制到线上。
 3. 调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
 ##### Parameters
@@ -258,7 +258,7 @@ console.log(signTx) // {"type":"1","version":"1","chainID":"1","from":"Lemo836BQ
 ```
 LemoTx.crateVote(txInfo)
 ```
-1.创建投票交易    
+1.创建一个未签名的[`LemoTx`](#tx-constructor)投票交易     
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -267,7 +267,7 @@ LemoTx.crateVote(txInfo)
 在投票特殊交易中的`to`表示投票对象的账户地址，`amount`、`data`字段会被忽略
 
 ##### Returns
-`string` - 创建之后的[交易](#data-structure-transaction) 信息，未签名
+`LemoTx` - 未签名的LemoTx实例
 
 ##### Example
 ```js
@@ -284,7 +284,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createCandidate(txInfo, candidateInfo)
 ```
-1.创建用于注册或编辑候选人信息的特殊交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于注册或编辑候选人信息的特殊交易，此方法在`data`中填充了特殊信息   
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -293,7 +293,7 @@ LemoTx.createCandidate(txInfo, candidateInfo)
 1. `object` - 候选人信息
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[构造交易](#tx-constructor)相同，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息
 
 ##### Example
 ```js
@@ -318,7 +318,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createAsset(txConfig, createAssetInfo)
 ```
-1.创建资产的特殊交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于创建资产的特殊交易，此方法在`data`中填充了特殊信息   
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -327,7 +327,7 @@ LemoTx.createAsset(txConfig, createAssetInfo)
 1. `object` - 创建资产的信息，即[资产](#data-structure-asset)中的信息。
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[构造函数](#tx-constructor)相同，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息
 
 ##### Example
 ```js
@@ -356,7 +356,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createIssueAsset(txConfig, issueAssetInfo)
 ```
-1.创建发行资产的交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于发行资产的交易，此方法在`data`中填充了特殊信息  
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -365,7 +365,7 @@ LemoTx.createIssueAsset(txConfig, issueAssetInfo)
 1. `object` - 发行资产的信息， 包含 `assetCode`, `metaData`, `supplyAmount` 字段
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易](#data-structure-transaction)信息相同，发行信息会放在`data`字段内，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息，发行信息会放在`data`字段内
 
 ##### Example
 ```js
@@ -387,7 +387,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createReplenishAsset(txConfig, replenishInfo)
 ```
-1.创建增发资产的交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于增发资产的交易，此方法在`data`中填充了特殊信息    
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -396,7 +396,7 @@ LemoTx.createReplenishAsset(txConfig, replenishInfo)
 1. `object` - 增发资产的信息， 包含`assetCode`，`assetId`，`replenishAmount`字段
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易信息](#data-structure-transaction)相同，增发信息会放在`data`字段内，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息，增发信息会放在`data`字段内  
 
 ##### Example
 ```js
@@ -418,7 +418,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createModifyAsset(txConfig, modifyInfo)
 ```
-1.创建修改资产的交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于修改资产的交易，此方法在`data`中填充了特殊信息  
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -427,7 +427,7 @@ LemoTx.createModifyAsset(txConfig, modifyInfo)
 1. `object` - 修改资产的信息， 包含`assetCode`和`info`字段，`info`对象中包含需要修改的内容，如`name`、`symbol`、`description`、`freeze`、`suggestedGasLimit`等
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易信息](#data-structure-transaction)相同，修改信息会放在`data`字段内，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息，修改信息会放在`data`字段内
 
 ##### Example
 ```js
@@ -452,7 +452,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createTransferAsset(txConfig, transferAssetInfo)
 ```
-1.创建交易资产的交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于交易资产的交易，此方法在`data`中填充了特殊信息    
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -461,7 +461,7 @@ LemoTx.createTransferAsset(txConfig, transferAssetInfo)
 1. `object` - 修改资产的信息， 包含包含`assetID`字段
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易信息](#data-structure-transaction) 相同，交易信息会放在`data`字段内，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息，交易信息会放在`data`字段内
 
 ##### Example
 ```js
@@ -482,7 +482,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createNoGas(txConfig, gasPayer)
 ```
-创建用于免Gas费用的交易  
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于免Gas费用的交易，此方法在`data`中填充了特殊信息 
 
 1. 对包含`gasPayer`账户地址的交易信息进行签名，该交易信息中不含`gasLimit`和`gasPrice`字段
 2. 把返回的字符串交给代付gas的人
@@ -494,7 +494,7 @@ LemoTx.createNoGas(txConfig, gasPayer)
 1. `string` - Gas代付账户的地址
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易信息](#data-structure-transaction) 相同，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息
 
 ##### Example
 ```js
@@ -511,7 +511,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createReimbursement(noGasTxStr, gasPrice, gasLimit)
 ```
-1.对免代付Gas费用的交易进行签名，创建为其代付的gas交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，对免代付Gas费用的交易进行签名，创建为其代付的gas交易，此方法在`data`中填充了特殊信息  
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -521,7 +521,7 @@ LemoTx.createReimbursement(noGasTxStr, gasPrice, gasLimit)
 2. `string` - 交易消耗的总 gas 上限
 
 ##### Returns
-`string` -  构造的特殊交易信息，参数和[交易信息](#data-structure-transaction) 相同，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息
 
 ##### Example
 ```js
@@ -540,7 +540,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createTempAddress(txConfig, userId)
 ```
-创建临时账户的交易
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于创建临时账户的交易，此方法在`data`中填充了特殊信息
 1. 临时账户没有私钥，只能由Signers中的账户进行签名
 2. 临时账户必须先配置Signers才能使用
 3. 如果账户已存在，则创建失败  
@@ -552,7 +552,7 @@ LemoTx.createTempAddress(txConfig, userId)
 1. `string` - 用户自定义的id，必须是一个10字节以内的十六进制字符串
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易信息](#data-structure-transaction) 相同，临时账户信息会放在`data`字段内，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息，，临时账户信息会放在`data`字段内
 
 ##### Example
 ```js
@@ -570,7 +570,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createModifySigners(txConfig, signers)
 ```
-1.创建多重签名的交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于多重签名的交易，此方法在`data`中填充了特殊信息  
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -579,7 +579,7 @@ LemoTx.createModifySigners(txConfig, signers)
 1. `array` - 多重签名的列表，包含 `address` 和 `weight`字段
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易信息](#data-structure-transaction)相同，修改多重签名信息会放在`data`字段内，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息，修改多重签名信息会放在`data`字段内
 
 ##### Example
 ```js
@@ -603,7 +603,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 tx.createBoxTx(txConfig, subTxList) 
 ```
-创建箱子交易
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于创建箱子交易，此方法在`data`中填充了特殊信息
 1. 箱子交易可以储存包括特殊交易在内的多个完整的交易信息，但是不能在箱子交易里面再储存箱子交易
 2. 箱子交易的时间戳等于箱子中的子交易的最小时间戳
 3. 箱子交易中子交易会同时成功或失败，如果有一个子交易没有成功那么箱子交易中所有交易都失败
@@ -616,7 +616,7 @@ tx.createBoxTx(txConfig, subTxList)
 1. `array` - 子交易列表，列表中的交易必须是字符串或对象的形式并且已经签好名之后的交易
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易信息](#data-structure-transaction)相同，箱子交易的子交易在 `data` 字段内，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息，箱子交易的子交易在 `data` 字段内
 
 ##### Example
 ```js
@@ -645,7 +645,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 tx.createContractCreation(txConfig, code, constructorArgs)
 ```
-1.创建智能合约的交易  
+1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于创建智能合约的交易，此方法在`data`中填充了特殊信息   
 2.对交易进行签名    
 3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
@@ -655,7 +655,7 @@ tx.createContractCreation(txConfig, code, constructorArgs)
 2. `string` - 合约中构造的参数的十六进制字符串
 
 ##### Returns
-`string` - 构造的特殊交易信息，参数和[交易信息](#data-structure-transaction)相同，智能合约信息会放在`data`字段内，未签名
+`LemoTx` - 构造未签名的LemoTx实例的交易信息，智能合约信息会放在`data`字段内
 
 ##### Example
 ```js

@@ -261,7 +261,7 @@ console.log(signTx) // {"type":"1","version":"1","chainID":"1","from":"Lemo836BQ
 ```
 LemoTx.createVote(txInfo)
 ```
-1. Create a transaction for vote  
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for vote  
 2. sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -286,7 +286,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createCandidate(txInfo, candidateInfo)
 ```
-1. Create a transaction for register/edit candidate  
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for candidate. The API fills some special information in the `data` filed in LemoTx instance    
 2. sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -320,7 +320,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createAsset(txConfig, createAssetInfo)
 ```
-1. Create a transaction for create assets  
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for create assets. The API fills some special information in the `data` filed in LemoTx instance    
 2. sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -358,7 +358,7 @@ lemo.send(signTx)  // Call the send method in lemo-client
 ```
 LemoTx.createIssueAsset(txConfig, issueAssetInfo)
 ```
-1. Create a transaction for the issuance of assets  
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for the issuance of assets. The API fills some special information in the `data` filed in LemoTx instance    
 2. sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -389,7 +389,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createReplenishAsset(txConfig, replenishInfo)
 ```
-1. Create a transaction for replenish assets  
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for replenish assets. The API fills some special information in the `data` filed in LemoTx instance    
 2. sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -420,7 +420,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createModifyAsset(txConfig, modifyInfo)
 ```
-1. Create a transaction for modify assets  
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for modify assets. The API fills some special information in the `data` filed in LemoTx instance    
 2. sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -454,7 +454,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createTransferAsset(txConfig, transferAssetInfo)
 ```
-1. Create a transaction for transaction assets  
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for transaction assets. The API fills some special information in the `data` filed in LemoTx instance    
 2. sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -484,7 +484,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createNoGas(txConfig, gasPayer)
 ```
-Create a transaction for gas free transaction  
+Create an unsigned LemoTx [`instance`](#tx-constructor) for gas free transaction. The API fills some special information in the `data` filed in LemoTx instance    
 1. Create a gas free transaction with transaction information and `gasPayer` account address. The transaction information is exclude `gasLimit` and `gasPrice` field
 2. Send the output string to gas gasPayer
 3. The gasPayer sign the string with his private key, fill `gasLimit` and `gasPrice` field. Then return a final transaction string
@@ -512,7 +512,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createReimbursement(noGasTxStr, gasPrice, gasLimit)
 ```
-1. Create a gas reimbursement transaction for paying gas to a free gas transaction  
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for paying gas to a free gas transaction. The API fills some special information in the `data` filed in LemoTx instance    
 2. sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -541,7 +541,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createCreateTempAddress(txConfig, userId)
 ```
-Create a transaction for create temp account transaction,   
+Create an unsigned LemoTx [`instance`](#tx-constructor) for create temp account transaction. The API fills some special information in the `data` filed in LemoTx instance     
 1. Temp account has no private key and only can be signed by accounts in its `signers`
 2. Temp account must be configured with Signers before using it
 3. If the temp account already exists, the creation will be fail  
@@ -571,7 +571,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createModifySigners(txConfig, signers)
 ```
-Create the transaction of the signers in the multi-signer account,  
+Create the transaction of the signers in the multi-signer account, the API fills some special information in the `data` filed in LemoTx instance  
 If it's created successfully, sign the transaction  
 Then, call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -604,10 +604,12 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createBoxTx(txConfig, subTxList) 
 ```
-Create a transaction for box transactions,   
+Create an unsigned LemoTx [`instance`](#tx-constructor) for box transactions,   
+The API fills some special information in the `data` filed in LemoTx instance  
 1. Box transaction can store multiple signed transaction informations including special transactions, but cannot store box transactions
 2. The timestamp of the box transaction is equal to the minimum timestamp of the child transaction in the box
 3. The neutron in the box transactions will succeed or fail at the same time, if one of the sub-transaction does not succeed then all the transactions in the box trade will fail  
+4. The sub-transaction of the box transaction must be signed transaction
 If it's created successfully, sign the transaction  
 Then, call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
@@ -645,7 +647,8 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createContractCreation(txConfig, code, constructorArgs)
 ```
-1. Create a transaction for contract creation   
+1. Create an unsigned LemoTx [`instance`](#tx-constructor) for contract creation    
+The API fills some special information in the `data` filed in LemoTx instance   
 2. Sign the transaction  
 3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
 
