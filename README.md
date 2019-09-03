@@ -261,9 +261,7 @@ console.log(signedTxStr) // {"type":"1","version":"1","chainID":"1","from":"Lemo
 ```
 LemoTx.createVote(txInfo)
 ```
-1. Create an unsigned LemoTx [`instance`](#tx-constructor) for vote. The API fills some special information in the `data` filed in LemoTx instance  
-2. sign the transaction  
-3. Call the send method in [`lemo-client`](https://github.com/LemoFoundationLtd/lemo-client) to [`send`](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send) the transaction to LemoChain
+Create an unsigned LemoTx [`instance`](#tx-constructor) for vote. The API fills some special information in the `data` filed in LemoTx instance  
 
 ##### Parameters
 `object` - Unsigned transaction like the same parameter in [`tx constructor`](#Constructor). For this API, `to` means vote target. And `amount`, `data` fields will be ignored. 

@@ -258,9 +258,7 @@ console.log(signedTxStr) // {"type":"1","version":"1","chainID":"1","from":"Lemo
 ```
 LemoTx.crateVote(txInfo)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)投票交易     
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)投票交易    
 
 ##### Parameters
 1. `object` - 未签名的交易信息，细节可参考 [构造交易](#Constructor).
