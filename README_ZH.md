@@ -247,9 +247,9 @@ LemoTx.sign(privakey, txConfig)
 const txInfo = {chainID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
 const code = '0x000000100000100'
 const constructorArgs = '213313'
-const result = LemoTx.createContractCreation(txInfo, code, constructorArgs)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
-console.log(signTx) // {"type":"1","version":"1","chainID":"1","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","gasPrice":"3000000000","gasLimit":"2000000","amount":"100","expirationTime":"1567152222","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","data":"0x0000001000001003313","sigs":["0xd897e25a640dda2d56ecb986c7b4c0dc835fd5131a434a5f5ca0ee1cd9caf8dc292dc4cefc9242c41a6e7976e000d66113232ff347e4db963dbaf70896fb27de00"],"gasPayerSigs":[]}
+const unsignedTx = LemoTx.createContractCreation(txInfo, code, constructorArgs)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', unsignedTx)
+console.log(signedTxStr) // {"type":"1","version":"1","chainID":"1","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","gasPrice":"3000000000","gasLimit":"2000000","amount":"100","expirationTime":"1567152222","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","data":"0x0000001000001003313","sigs":["0xd897e25a640dda2d56ecb986c7b4c0dc835fd5131a434a5f5ca0ee1cd9caf8dc292dc4cefc9242c41a6e7976e000d66113232ff347e4db963dbaf70896fb27de00"],"gasPayerSigs":[]}
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -272,8 +272,8 @@ LemoTx.crateVote(txInfo)
 ##### Example
 ```js
 const txInfo = {from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
-const createTx = LemoTx.crateVote(txInfo)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', createTx)
+const tx = LemoTx.crateVote(txInfo)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -284,9 +284,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createCandidate(txInfo, candidateInfo)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于注册或编辑候选人信息的特殊交易，此方法在`data`中填充了特殊信息   
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于注册或编辑候选人信息的特殊交易，此方法在`data`中填充了特殊信息   
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [tx constructor](#Constructor)。这里的`to`、`toName`、`amount`、`data`字段会被忽略. 
@@ -306,8 +304,8 @@ const candidateInfo = {
     port: '7001',
     introduction: 'this is a demo',
 }
-const result = LemoTx.createCandidate(txInfo, candidateInfo)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createCandidate(txInfo, candidateInfo)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -318,9 +316,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createAsset(txConfig, createAssetInfo)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于创建资产的特殊交易，此方法在`data`中填充了特殊信息   
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于创建资产的特殊交易，此方法在`data`中填充了特殊信息   
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [构造交易](#Constructor)。其中`to`, `amount`, `toName`字段会被省略
@@ -344,8 +340,8 @@ const createAssetInfo = {
         suggestedGasLimit: '60000',
     },
 }
-const result = LemoTx.createAsset(txInfo, createAssetInfo)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createAsset(txInfo, createAssetInfo)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -357,8 +353,6 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 LemoTx.createIssueAsset(txConfig, issueAssetInfo)
 ```
 1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于发行资产的交易，此方法在`data`中填充了特殊信息  
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [tx constructor](#Constructor)。
@@ -375,8 +369,8 @@ const issueAssetInfo = {
     metaData: 'issue asset metaData',
     supplyAmount: '100000',
 }
-const result = LemoTx.createIssueAsset(txInfo, issueAssetInfo)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createIssueAsset(txInfo, issueAssetInfo)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -387,9 +381,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createReplenishAsset(txConfig, replenishInfo)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于增发资产的交易，此方法在`data`中填充了特殊信息    
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于增发资产的交易，此方法在`data`中填充了特殊信息    
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [构造交易](#Constructor)。
@@ -406,8 +398,8 @@ const replenishAssetInfo = {
     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
     replenishAmount: '100000',
 }
-const result = LemoTx.createReplenishAsset(txInfo, replenishAssetInfo)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createReplenishAsset(txInfo, replenishAssetInfo)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -418,9 +410,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createModifyAsset(txConfig, modifyInfo)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于修改资产的交易，此方法在`data`中填充了特殊信息  
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于修改资产的交易，此方法在`data`中填充了特殊信息  
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [构造交易](#Constructor)。
@@ -440,8 +430,8 @@ const ModifyAssetInfo = {
         description: 'demo asset',
     },
 }
-const result = LemoTx.createModifyAsset(txInfo, ModifyAssetInfo)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createModifyAsset(txInfo, ModifyAssetInfo)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -452,9 +442,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createTransferAsset(txConfig, transferAssetInfo)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于交易资产的交易，此方法在`data`中填充了特殊信息    
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于交易资产的交易，此方法在`data`中填充了特殊信息    
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [构造交易](#Constructor)。
@@ -470,8 +458,8 @@ const transferAsset = {
     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
     transferAmount: '110000',
 }
-const result = LemoTx.createTransferAsset(txInfo, transferAsset)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createTransferAsset(txInfo, transferAsset)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -500,8 +488,8 @@ LemoTx.createNoGas(txConfig, gasPayer)
 ```js
 const txInfo = {chainID: 1, to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY', from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}
 const gasPayer = 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
-const createNoGas = LemoTx.createNoGas(txInfo, gasPayer)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createNoGas(txInfo, gasPayer)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 ```
 
 ---
@@ -511,9 +499,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createReimbursement(noGasTxStr, gasPrice, gasLimit)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，对免代付Gas费用的交易进行签名，创建为其代付的gas交易，此方法在`data`中填充了特殊信息  
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，对免代付Gas费用的交易进行签名，创建为其代付的gas交易，此方法在`data`中填充了特殊信息  
 
 ##### Parameters
 0. `string` - 通过[LemoTx.createNoGas](#tx-createNoGas) 方法得到的交易信息并进行签名后的数据
@@ -528,8 +514,8 @@ LemoTx.createReimbursement(noGasTxStr, gasPrice, gasLimit)
 const txInfo = {chainID: 1, to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY', from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}
 const gasPayer = 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
 const noGasInfo = LemoTx.createNoGas(txInfo, gasPayer)
-const result = LemoTx.createReimbursement(noGasInfo, 2, 100)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createReimbursement(noGasInfo, 2, 100)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -544,8 +530,6 @@ LemoTx.createTempAddress(txConfig, userId)
 1. 临时账户没有私钥，只能由Signers中的账户进行签名
 2. 临时账户必须先配置Signers才能使用
 3. 如果账户已存在，则创建失败  
-如果临时账户创建成功，则对交易进行签名    
-然后调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [构造交易](#Constructor)
@@ -558,8 +542,8 @@ LemoTx.createTempAddress(txConfig, userId)
 ```js
 const userId = '0123456789'
 const txInfo = {chainID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}
-const result = LemoTx.createTempAddress(txInfo, userId)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createTempAddress(txInfo, userId)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -570,9 +554,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 LemoTx.createModifySigners(txConfig, signers)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于多重签名的交易，此方法在`data`中填充了特殊信息  
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于多重签名的交易，此方法在`data`中填充了特殊信息  
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [构造交易](#Constructor)
@@ -591,8 +573,8 @@ const signers = [{
             weight: 50,
         }]
 const txInfo = {chianID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}
-const result = LemoTx.createModifySigners(txInfo, signers)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createModifySigners(txInfo, signers)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -608,8 +590,6 @@ tx.createBoxTx(txConfig, subTxList)
 2. 箱子交易的时间戳等于箱子中的子交易的最小时间戳
 3. 箱子交易中子交易会同时成功或失败，如果有一个子交易没有成功那么箱子交易中所有交易都失败
 4. 箱子交易的子交易必须是已经签好名的交易
-箱子交易创建成功后对交易进行签名    
-然后调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [构造交易](#Constructor)，箱子交易中`to`会被省略
@@ -633,8 +613,8 @@ const createTransferAsset = LemoTx.createTransferAsset(transferAssetInfo, transf
 const signTransferAsset = LemoTx.sign(testPrivate, createTransferAsset)
 
 const subTxList = [signTempAddress, signTransferAsset]
-const result = LemoTx.createBoxTx({chainID: '1', from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}, subTxList)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createBoxTx({chainID: '1', from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}, subTxList)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
@@ -645,9 +625,7 @@ const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a
 ```
 tx.createContractCreation(txConfig, code, constructorArgs)
 ```
-1.创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于创建智能合约的交易，此方法在`data`中填充了特殊信息   
-2.对交易进行签名    
-3.调用[lemo-client](https://github.com/LemoFoundationLtd/lemo-client) 中的[send](https://github.com/LemoFoundationLtd/lemo-client#submodule-tx-send)方法将交易发送到LemoChian
+创建一个未签名的[`LemoTx`](#tx-constructor)实例，用于创建智能合约的交易，此方法在`data`中填充了特殊信息   
 
 ##### Parameters
 0. `object` - 签名前的交易信息，细节参考 [构造交易](#Constructor)
@@ -662,8 +640,8 @@ tx.createContractCreation(txConfig, code, constructorArgs)
 const txInfo = {chainID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
 const code = '0x000000100000100'
 const constructorArgs = '213313'
-const result = LemoTx.createContractCreation(txInfo, code, constructorArgs)
-const signTx = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', result)
+const tx = LemoTx.createContractCreation(txInfo, code, constructorArgs)
+const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
 // 调用lemo-client方法，lemo.send(signTx)
 ```
 
