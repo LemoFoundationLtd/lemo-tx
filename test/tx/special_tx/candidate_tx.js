@@ -7,7 +7,7 @@ import errors from '../../../lib/errors'
 
 describe('CandidateTx_new', () => {
     const minCandidateInfo = {
-        minerAddress: 'lemobw',
+        incomeAddress: 'lemobw',
         nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
         host: 'a.com',
         port: 7001,
@@ -42,7 +42,7 @@ describe('CandidateTx_new', () => {
     })
     it('useful config', () => {
         const candidateInfo = {
-            isCandidate: false,
+            isCandidate: true,
             ...minCandidateInfo,
         }
         const tx = new CandidateTx(
@@ -65,11 +65,11 @@ describe('CandidateTx_new', () => {
         {field: 'isCandidate', configData: false, result: 'false'},
         {field: 'isCandidate', configData: true, result: 'true'},
         {field: 'isCandidate', configData: 'true', error: errors.TXInvalidType('isCandidate', 'true', ['undefined', 'boolean'])},
-        {field: 'minerAddress', configData: 0x1, error: errors.TXInvalidType('minerAddress', 0x1, ['string'])},
-        {field: 'minerAddress', configData: '', error: errors.InvalidAddress('')},
-        {field: 'minerAddress', configData: '123', error: errors.InvalidAddress('')},
-        {field: 'minerAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
-        {field: 'minerAddress', configData: '0x1', error: errors.InvalidAddress('0x1')},
+        {field: 'incomeAddress', configData: 0x1, error: errors.TXInvalidType('incomeAddress', 0x1, ['string'])},
+        {field: 'incomeAddress', configData: '', error: errors.InvalidAddress('')},
+        {field: 'incomeAddress', configData: '123', error: errors.InvalidAddress('')},
+        {field: 'incomeAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
+        {field: 'incomeAddress', configData: '0x1', error: errors.InvalidAddress('0x1')},
         {field: 'nodeID', configData: '123', error: errors.TXInvalidLength('nodeID', '123', NODE_ID_LENGTH)},
         {
             field: 'nodeID',
@@ -123,7 +123,7 @@ describe('CandidateTx_new', () => {
 describe('CandidateTx_host_empty', () => {
     it('min config', () => {
         const minCandidateInfo = {
-            minerAddress: 'lemobw',
+            incomeAddress: 'lemobw',
             nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
             host: '',
             port: 7001,
@@ -131,5 +131,46 @@ describe('CandidateTx_host_empty', () => {
         assert.throws(() => {
             new CandidateTx({chainID, from}, minCandidateInfo)
         }, errors.TXFieldCanNotEmpty('host'))
+    })
+})
+
+describe('isCandidate', () => {
+    it('isCandidate is false', () => {
+        const candidateInfo = {
+            isCandidate: false,
+        }
+        const tx = new CandidateTx(
+            {
+                chainID,
+                from,
+                type: TxType.CANDIDATE,
+                message: 'abc',
+            },
+            candidateInfo,
+        )
+        assert.equal(tx.type, TxType.CANDIDATE)
+        assert.equal(tx.message, 'abc')
+        const result = JSON.stringify({isCandidate: String(candidateInfo.isCandidate)})
+        assert.equal(decodeUtf8Hex(tx.data), result)
+    })
+    it('isCandidate is false and Useless information', () => {
+        const candidateInfo = {
+            isCandidate: false,
+            incomeAddress: 'lemobw',
+            nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            host: '',
+            port: 7001,
+        }
+        const tx = new CandidateTx(
+            {
+                chainID,
+                from,
+                type: TxType.CANDIDATE,
+                message: 'abc',
+            },
+            candidateInfo,
+        )
+        const result = JSON.stringify({isCandidate: String(candidateInfo.isCandidate)})
+        assert.equal(decodeUtf8Hex(tx.data), result)
     })
 })
