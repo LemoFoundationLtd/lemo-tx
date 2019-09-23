@@ -156,7 +156,7 @@ describe('all config', () => {
         {field: 'chainID', configData: '10000', result: 10000},
         {field: 'chainID', configData: 'abc', error: errors.TXMustBeNumber('chainID', 'abc')},
         {field: 'chainID', configData: '', result: 0},
-        {field: 'chainID', configData: 0, error: errors.TXInvalidRange('chainID', 0, 1, 0xffff)},
+        {field: 'chainID', configData: 0},
         {field: 'chainID', configData: '0x10000', error: errors.TXInvalidRange('chainID', '0x10000', 1, 0xffff)},
         {field: 'type', configData: undefined, result: 0},
         {field: 'type', configData: 0},
