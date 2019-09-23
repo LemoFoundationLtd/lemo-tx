@@ -7,7 +7,7 @@ import errors from '../../../lib/errors'
 
 describe('CandidateTx_new', () => {
     const minCandidateInfo = {
-        inComeAddress: 'lemobw',
+        incomeAddress: 'lemobw',
         nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
         host: 'a.com',
         port: 7001,
@@ -65,11 +65,11 @@ describe('CandidateTx_new', () => {
         {field: 'isCandidate', configData: false, result: 'false'},
         {field: 'isCandidate', configData: true, result: 'true'},
         {field: 'isCandidate', configData: 'true', error: errors.TXInvalidType('isCandidate', 'true', ['undefined', 'boolean'])},
-        {field: 'inComeAddress', configData: 0x1, error: errors.TXInvalidType('inComeAddress', 0x1, ['string'])},
-        {field: 'inComeAddress', configData: '', error: errors.InvalidAddress('')},
-        {field: 'inComeAddress', configData: '123', error: errors.InvalidAddress('')},
-        {field: 'inComeAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
-        {field: 'inComeAddress', configData: '0x1', error: errors.InvalidAddress('0x1')},
+        {field: 'incomeAddress', configData: 0x1, error: errors.TXInvalidType('incomeAddress', 0x1, ['string'])},
+        {field: 'incomeAddress', configData: '', error: errors.InvalidAddress('')},
+        {field: 'incomeAddress', configData: '123', error: errors.InvalidAddress('')},
+        {field: 'incomeAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
+        {field: 'incomeAddress', configData: '0x1', error: errors.InvalidAddress('0x1')},
         {field: 'nodeID', configData: '123', error: errors.TXInvalidLength('nodeID', '123', NODE_ID_LENGTH)},
         {
             field: 'nodeID',
@@ -123,7 +123,7 @@ describe('CandidateTx_new', () => {
 describe('CandidateTx_host_empty', () => {
     it('min config', () => {
         const minCandidateInfo = {
-            inComeAddress: 'lemobw',
+            incomeAddress: 'lemobw',
             nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
             host: '',
             port: 7001,
