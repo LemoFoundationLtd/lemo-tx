@@ -56,7 +56,7 @@ describe('CandidateTx_new', () => {
         )
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.message, 'abc')
-        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
+        const result = JSON.stringify({isCandidate: String(candidateInfo.isCandidate)})
         assert.equal(decodeUtf8Hex(tx.data), result)
     })
 
