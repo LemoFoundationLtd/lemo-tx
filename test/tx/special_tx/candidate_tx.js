@@ -133,3 +133,24 @@ describe('CandidateTx_host_empty', () => {
         }, errors.TXFieldCanNotEmpty('host'))
     })
 })
+
+describe('isCandidate', () => {
+    it('isCandidate is false', () => {
+        const candidateInfo = {
+            isCandidate: false,
+        }
+        const tx = new CandidateTx(
+            {
+                chainID,
+                from,
+                type: TxType.CANDIDATE,
+                message: 'abc',
+            },
+            candidateInfo,
+        )
+        assert.equal(tx.type, TxType.CANDIDATE)
+        assert.equal(tx.message, 'abc')
+        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
+        assert.equal(decodeUtf8Hex(tx.data), result)
+    })
+})
