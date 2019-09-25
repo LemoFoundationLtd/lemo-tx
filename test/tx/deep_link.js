@@ -58,6 +58,13 @@ describe('deep_link', () => {
             parseDeepLink(uri)
         }, errors.InvalidAddress('123456'))
     })
+    // txConfig is not string
+    it('uri_is_not_string', () => {
+        const uri = 123
+        assert.throws(() => {
+            parseDeepLink(uri)
+        }, errors.InvalidDeepLink(123))
+    })
     // txConfig is empty
     it('empty_config', () => {
         const txConfig = {}
