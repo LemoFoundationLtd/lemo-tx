@@ -59,5 +59,5 @@ describe('Modify_signers_empty', () => {
     const signers = []
     assert.throws(() => {
         new ModifySignersTx({chainID, from: testAddr}, signers)
-    }, errors.TXFieldCanNotEmpty('signers'))
+    }, errors.FieldIsRequired('signers'))
 })

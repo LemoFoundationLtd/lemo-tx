@@ -8,7 +8,6 @@
     "browser": "dist/lemo-tx.js",
     "dependencies": {
         "@babel/runtime": "7.5.5",
-        "base64-url": "2.3.2",
         "bignumber.js": "9.0.0",
         "core-js": "^3.2.1",
         "js-base64": "2.5.1",

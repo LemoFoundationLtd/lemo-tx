@@ -20,7 +20,7 @@ describe('Tx_new', () => {
     it('empty config', () => {
         assert.throws(() => {
             new Tx({})
-        }, errors.TXFieldCanNotEmpty('from'))
+        }, errors.FieldIsRequired('from'))
     })
     it('minimal config', () => {
         const tx = new Tx({chainID, from: testAddr})
@@ -92,7 +92,7 @@ describe('Tx_new', () => {
         }
         assert.throws(() => {
             new Tx(obj)
-        }, errors.TXFieldCanNotEmpty('from'))
+        }, errors.FieldIsRequired('from'))
     })
 })
 
@@ -303,8 +303,8 @@ describe('all config', () => {
                 66,
             ),
         },
-        {field: 'from', configData: undefined, error: errors.TXFieldCanNotEmpty('from')},
-        {field: 'from', configData: '', error: errors.TXFieldCanNotEmpty('from')},
+        {field: 'from', configData: undefined, error: errors.FieldIsRequired('from')},
+        {field: 'from', configData: '', error: errors.FieldIsRequired('from')},
         {field: 'from', configData: 0x1, error: errors.TXInvalidType('from', 0x1, ['string'])},
         {field: 'from', configData: '0x1', error: errors.InvalidAddress('0x1')},
         {field: 'from', configData: 'lemobw'},

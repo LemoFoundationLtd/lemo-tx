@@ -130,7 +130,7 @@ describe('CandidateTx_host_empty', () => {
         }
         assert.throws(() => {
             new CandidateTx({chainID, from}, minCandidateInfo)
-        }, errors.TXFieldCanNotEmpty('host'))
+        }, errors.FieldIsRequired('host'))
     })
 })
 
