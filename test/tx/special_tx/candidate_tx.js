@@ -66,7 +66,7 @@ describe('CandidateTx_new', () => {
         {field: 'isCandidate', configData: true, result: 'true'},
         {field: 'isCandidate', configData: 'true', error: errors.TXInvalidType('isCandidate', 'true', ['undefined', 'boolean'])},
         {field: 'incomeAddress', configData: 0x1, error: errors.TXInvalidType('incomeAddress', 0x1, ['string'])},
-        {field: 'incomeAddress', configData: '', error: errors.InvalidAddress('')},
+        {field: 'incomeAddress', configData: '', result: ''},
         {field: 'incomeAddress', configData: '123', error: errors.InvalidAddress('')},
         {field: 'incomeAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
         {field: 'incomeAddress', configData: '0x1', error: errors.InvalidAddress('0x1')},
