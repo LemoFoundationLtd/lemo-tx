@@ -11,7 +11,7 @@
         "bignumber.js": "9.0.0",
         "core-js": "^3.2.1",
         "js-base64": "2.5.1",
-        "lemo-utils": "^1.1.6"
+        "lemo-utils": "^1.1.7"
     },
     "devDependencies": {
         "@babel/core": "7.5.5",

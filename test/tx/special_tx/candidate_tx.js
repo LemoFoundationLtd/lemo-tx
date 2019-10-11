@@ -66,7 +66,7 @@ describe('CandidateTx_new', () => {
         {field: 'isCandidate', configData: true, result: 'true'},
         {field: 'isCandidate', configData: 'true', error: errors.TXInvalidType('isCandidate', 'true', ['undefined', 'boolean'])},
         {field: 'incomeAddress', configData: 0x1, error: errors.TXInvalidType('incomeAddress', 0x1, ['string'])},
-        {field: 'incomeAddress', configData: '', error: errors.InvalidAddress('')},
+        {field: 'incomeAddress', configData: '', result: ''},
         {field: 'incomeAddress', configData: '123', error: errors.InvalidAddress('')},
         {field: 'incomeAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
         {field: 'incomeAddress', configData: '0x1', error: errors.InvalidAddress('0x1')},
@@ -138,6 +138,9 @@ describe('isCandidate', () => {
     it('isCandidate is false', () => {
         const candidateInfo = {
             isCandidate: false,
+            nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            host: '12313',
+            port: 7001,
         }
         const tx = new CandidateTx(
             {
@@ -150,7 +153,7 @@ describe('isCandidate', () => {
         )
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.message, 'abc')
-        const result = JSON.stringify({isCandidate: String(candidateInfo.isCandidate)})
+        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
         assert.equal(decodeUtf8Hex(tx.data), result)
     })
     it('isCandidate is false and Useless information', () => {
@@ -158,7 +161,7 @@ describe('isCandidate', () => {
             isCandidate: false,
             incomeAddress: 'lemobw',
             nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-            host: '',
+            host: '233343',
             port: 7001,
         }
         const tx = new CandidateTx(
@@ -170,7 +173,7 @@ describe('isCandidate', () => {
             },
             candidateInfo,
         )
-        const result = JSON.stringify({isCandidate: String(candidateInfo.isCandidate)})
-        assert.equal(decodeUtf8Hex(tx.data), result)
+        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
+        assert.equal(decodeUtf8Hex(tx.data).isCandidate, result.isCandidate)
     })
 })
