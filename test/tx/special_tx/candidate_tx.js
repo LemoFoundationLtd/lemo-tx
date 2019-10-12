@@ -19,7 +19,7 @@ describe('CandidateTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo, port: '7001'}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo, port: minCandidateInfo.port.toString()}))
     })
     it('useless config', () => {
         const tx = new CandidateTx(
@@ -38,7 +38,7 @@ describe('CandidateTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 101)
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo, port: '7001'}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo, port: minCandidateInfo.port.toString()}))
     })
     it('useful config', () => {
         const candidateInfo = {
@@ -56,7 +56,7 @@ describe('CandidateTx_new', () => {
         )
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.message, 'abc')
-        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate), port: '7001'})
+        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate), port: minCandidateInfo.port.toString()})
         assert.equal(decodeUtf8Hex(tx.data), result)
     })
 
@@ -154,7 +154,7 @@ describe('isCandidate', () => {
         )
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.message, 'abc')
-        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate), port: '7001'})
+        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate), port: candidateInfo.port.toString()})
         assert.equal(decodeUtf8Hex(tx.data), result)
     })
     it('isCandidate is false and Useless information', () => {
