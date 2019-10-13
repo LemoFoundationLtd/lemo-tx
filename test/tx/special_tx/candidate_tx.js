@@ -8,7 +8,7 @@ import errors from '../../../lib/errors'
 describe('CandidateTx_new', () => {
     const minCandidateInfo = {
         incomeAddress: 'lemobw',
-        nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+        nodeID: '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
         host: 'a.com',
         port: 7001,
         introduction: 'acsdusjkajkdaijadjskdei',
@@ -74,7 +74,7 @@ describe('CandidateTx_new', () => {
         {
             field: 'nodeID',
             configData:
-                '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+                '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
         },
         {field: 'host', configData: 'aaa'},
         {
@@ -125,7 +125,7 @@ describe('CandidateTx_host_empty', () => {
     it('min config', () => {
         const minCandidateInfo = {
             incomeAddress: 'lemobw',
-            nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            nodeID: '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
             host: '',
             port: 7001,
         }
@@ -139,7 +139,7 @@ describe('isCandidate', () => {
     it('isCandidate is false', () => {
         const candidateInfo = {
             isCandidate: false,
-            nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            nodeID: '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
             host: '12313',
             port: 7001,
         }
@@ -161,7 +161,7 @@ describe('isCandidate', () => {
         const candidateInfo = {
             isCandidate: false,
             incomeAddress: 'lemobw',
-            nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            nodeID: '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
             host: '233343',
             port: 7001,
         }
