@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import {decodeUtf8Hex} from 'lemo-utils'
 import CandidateTx from '../../../lib/tx/special_tx/candidate_tx'
 import {chainID, from} from '../../datas'
-import {TxType, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../../lib/const'
+import {TxType, NODE_ID_LENGTH, MAX_DEPUTY_FIELD_LENGTH, MAX_DEPUTY_LONG_FIELD_LENGTH} from '../../../lib/const'
 import errors from '../../../lib/errors'
 
 describe('CandidateTx_new', () => {
@@ -79,24 +79,63 @@ describe('CandidateTx_new', () => {
         {field: 'host', configData: 'aaa'},
         {
             field: 'host',
-            configData:
-                'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            configData: new Array(129).fill(1).join(''),
             error: errors.TXInvalidMaxLength(
                 'host',
-                'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-                MAX_DEPUTY_HOST_LENGTH,
+                new Array(129).fill(1).join(''),
+                MAX_DEPUTY_FIELD_LENGTH,
             ),
         },
         {field: 'port', configData: '1'},
         {field: 'port', configData: '1001'},
         {field: 'port', configData: 0, error: errors.TXInvalidRange('port', 0, 1, 0xffff)},
         {field: 'port', configData: '0xfffff', error: errors.TXInvalidRange('port', '0xfffff', 1, 0xffff)},
-        {field: 'port', configData: ['0xff'], error: errors.TXInvalidType('port', ['0xff'], ['string', 'number'])},
+        {field: 'port', configData: [123], error: errors.TXInvalidType('port', [123], ['string', 'number'])},
+        {field: 'name', configData: 'node-1'},
+        {field: 'name', configData: 123, error: errors.TXInvalidType('name', 123, ['string'])},
+        {
+            field: 'name',
+            configData: new Array(129).fill(1).join(''),
+            error: errors.TXInvalidMaxLength(
+                'name',
+                new Array(129).fill(1).join(''),
+                MAX_DEPUTY_FIELD_LENGTH,
+            ),
+        },
+        {field: 'teamName', configData: 'team-1'},
+        {field: 'teamName', configData: 123, error: errors.TXInvalidType('teamName', 123, ['string'])},
+        {
+            field: 'teamName',
+            configData: new Array(129).fill(1).join(''),
+            error: errors.TXInvalidMaxLength(
+                'teamName',
+                new Array(129).fill(1).join(''),
+                MAX_DEPUTY_FIELD_LENGTH,
+            ),
+        },
+        {field: 'email', configData: 'a@b.com'},
+        {field: 'email', configData: 'abc', error: errors.InvalidEmail('abc')},
+        {field: 'email', configData: 123, error: errors.TXInvalidType('email', 123, ['string'])},
+        {
+            field: 'email',
+            configData: `${new Array(129).fill(1).join('')}@b.com`,
+            error: errors.TXInvalidMaxLength(
+                'email',
+                `${new Array(129).fill(1).join('')}@b.com`,
+                MAX_DEPUTY_FIELD_LENGTH,
+            ),
+        },
         {field: 'introduction', configData: 'ab0000011111111'},
         {field: 'introduction', configData: ''},
+        {field: 'introduction', configData: 'aaa👍a0%7&12\'a65"</>好f5748a6'},
         {
             field: 'introduction',
-            configData: 'aaaaaa0，%7&5——5f9b512a65603b38e30885c98cbac7，0259c3235c9b3f42e，563b480，，dea351ba0ff5748a638fe0aeff5d845bf37a3b437831871mb48fd32f33cd9a3c0',
+            configData: new Array(1025).fill(1).join(''),
+            error: errors.TXInvalidMaxLength(
+                'introduction',
+                new Array(1025).fill(1).join(''),
+                MAX_DEPUTY_LONG_FIELD_LENGTH,
+            ),
         },
     ]
     tests.forEach(test => {

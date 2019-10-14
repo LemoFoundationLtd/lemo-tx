@@ -298,11 +298,14 @@ Create an unsigned LemoTx [`instance`](#tx-constructor) for candidate. The API f
 const txInfo = {chainID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}
 const candidateInfo = {
     isCandidate: true,
+    name: 'cross-chain-node',
+    teamName: 'lemo-tac-team',
     minerAddress: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
     nodeID: '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
     host: '127.0.0.1',
     port: '7001',
     introduction: 'this is a demo',
+    email: 'abc@gmail.com',
 }
 const tx = LemoTx.createCandidate(txInfo, candidateInfo)
 const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', tx)
