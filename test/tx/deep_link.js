@@ -23,7 +23,7 @@ describe('deep_link', () => {
         assert.equal(paseResult.gasLimit, txConfig.gasLimit)
         assert.equal(paseResult.amount.toString(), txConfig.amount)
         assert.equal(paseResult.data, txConfig.data)
-        assert.equal(paseResult.expirationTime, txConfig.expirationTime - (txConfig.expirationTime % 1000))
+        assert.equal(paseResult.expirationTime, txConfig.expirationTime)
         assert.equal(paseResult.message, txConfig.message)
         assert.equal(paseResult.from, txConfig.from)
         assert.equal(paseResult.gasPayer, txConfig.gasPayer)
