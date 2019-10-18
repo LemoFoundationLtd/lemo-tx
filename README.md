@@ -60,7 +60,11 @@ Static Properties | description
 [LemoTx.createModifySigners(txConfig, signer)](#tx-createModifySigners) | Create a special transaction for modify multiple signer
 [LemoTx.createBoxTx(txConfig, subTxList)](#tx-createBoxTx) | Create a special transaction for box transaction
 [LemoTx.createContractCreation(txConfig, code, constructorArgs)](#tx-createContractCreation) | Create a special transaction for contract creation
+[LemoTx.createPayDeepLink(txConfig)](#tx-createPayDeepLink) | Create deep links for payments
+[LemoTx.createSignDeepLink(config)](#tx-createSignDeepLink) | Create deep links for signatures
+[LemoTx.parseDeepLink(uri)](#tx-parseDeepLink) | Create a special transaction for contract creation
 [LemoTx.TxType](#class-TxType) | Enum of transaction type
+[LemoTx.DeepLinkType](#class-DeepLinkType) | Parse deep link
 
 ---
 
@@ -126,6 +130,13 @@ chainID | description
 ---|---
 1 | LemoChain main net
 100 | LemoChain test net
+
+<a name="data-deeplink-type"></a>
+
+transaction type | number value | description
+---|---|---
+LemoTx.TxType.PAY | 0 | The deeplink type of payment
+LemoTx.TxType.SIGN | 1 | The deeplink type of the signature
 
 <a name="data-structure-asset"></a>
 #### asset
@@ -651,6 +662,86 @@ const signedTxStr = LemoTx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd
 
 ---
 
+<a name="tx-createPayDeepLink"></a>
+#### LemoTx.createPayDeepLink
+```
+LemoTx.createPayDeepLink(txConfig)
+```
+Create a deep link for payment and convert the constructed transaction into a link address
+
+##### Parameters
+0. `object` - Unsigned transaction like the same parameter in [`tx constructor`](#Constructor). 
+
+##### Returns
+`string` - The address of `lemo://pay?` link
+
+##### Example
+```js
+const txInfo = {chainID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
+const result = LemoTx.createPayDeepLink(txInfo)
+console.log(result)
+// lemo://pay?c=1&f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&t=Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34&a=0.0000000000000001
+```
+
+---
+
+<a name="tx-createSignDeepLink"></a>
+#### LemoTx.createSignDeepLink
+```
+LemoTx.createSignDeepLink(config)
+```
+Create deep links for signatures
+
+##### Parameters
+0. `object` - Trading information before signature, includes：
+    `message` - (string)(optional)Text to be signed
+    `data` - (string)(optional)The hexadecimal data string to be signed must begin with 0x.
+    `signer` - (string)(optional)Limit must use this account to sign, may not fill
+    `receiver` - (string)(optional)Send a POST request with a signature over HTTP to that address
+
+##### Returns
+`string` - The address of `lemo://sign?` link
+
+##### Example
+```js
+const config = {message: 'sign this message', signer: 'Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH', receiver: 'http://lemochain.com/a?b=c',}
+const result = createSignDeepLink(config)
+console.log(result)
+// lemo://sign?m=c2lnbiB0aGlzIG1lc3NhZ2U&s=Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH&r=http%3A%2F%2Flemochain.com%2Fa%3Fb%3Dc
+```
+
+
+---
+
+<a name="tx-parseDeepLink"></a>
+#### LemoTx.parseDeepLink
+```
+LemoTx.parseDeepLink(uri)
+```
+Parse deep link  
+
+##### Parameters
+0. `string` - Deep links that need to be resolved. 
+
+##### Returns
+`object` - Parsed object information
+
+##### Example
+```js
+// 解析结果为交易信息
+const deepLinkTx = 'lemo://pay?ty=0&c=200&v=1&f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&t=Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH&tn=aa&gp=0.000000002&gl=100&a=0.000000000000000001&d=0x0c&e=1544584596&m=YWFh'
+const resultTx = LemoTx.parseDeepLink(deepLinkTx)
+console.log(resultTx)
+// {"type":0,"version":1,"chainID":200,"from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","to":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","toName":"aa","gasPrice":"2","gasLimit":100,"amount":"1","data":"0x0c","expirationTime":1544584596,"message":"aaa"}
+// 解析结果为交易信息
+const deepLinkSign = 'lemo://sign?m=c2lnbiB0aGlzIG1lc3NhZ2U&s=Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH&r=http%3A%2F%2Flemochain.com%2Fa%3Fb%3Dc'
+const resultSign = LemoTx.parseDeepLink(deepLinkSign)
+console.log(resultSign)
+// {"message":"sign this message","signer":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","receiver":"http://lemochain.com/a?b=c"}
+```
+
+---
+
 ### other API
 
 <a name="tool-TxType"></a>
@@ -667,6 +758,23 @@ Enum of [transaction type](#data-transaction-type), the value is `number` type
 
 ```js
 console.log(LemoTx.TxType.VOTE) // 1
+```
+
+---
+<a name="tool-DeepLinkType"></a>
+
+#### LemoTx.DeepLinkType
+
+```
+LemoTx.DeepLinkType
+```
+
+Enum of [deeplink type](#data-deepLink-type), the value is `number` type
+
+##### Example
+
+```js
+console.log(LemoTx.TxType.PAY) // 0
 ```
 
 ---
