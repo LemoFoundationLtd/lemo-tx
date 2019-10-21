@@ -729,7 +729,7 @@ const deepLinkTx = 'lemo://pay?ty=0&c=200&v=1&f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24Z
 const resultTx = LemoTx.parseDeepLink(deepLinkTx)
 console.log(resultTx)
 // {"type":0,"version":1,"chainID":200,"from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","to":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","toName":"aa","gasPrice":"2","gasLimit":100,"amount":"1","data":"0x0c","expirationTime":1544584596,"message":"aaa"}
-// 解析结果为交易信息
+// 解析结果为签名信息
 const deepLinkSign = 'lemo://sign?m=c2lnbiB0aGlzIG1lc3NhZ2U&s=Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH&r=http%3A%2F%2Flemochain.com%2Fa%3Fb%3Dc'
 const resultSign = LemoTx.parseDeepLink(deepLinkSign)
 console.log(resultSign)
@@ -771,7 +771,7 @@ LemoTx.DeepLinkType
 ##### Example
 
 ```js
-console.log(LemoTx.TxType.PAY) // 0
+console.log(LemoTx.DeepLinkType.PAY) // 0
 ```
 ---
 

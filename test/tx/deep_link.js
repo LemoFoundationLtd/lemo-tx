@@ -1,5 +1,6 @@
 import {assert} from 'chai'
 import {parseDeepLink, createPayDeepLink, createSignDeepLink} from '../../lib/tx/deep_link'
+import {DeepLinkType} from '../../lib/const'
 import {txInfo, testAddr, dataSigs} from '../datas'
 import errors from '../../lib/errors'
 
@@ -14,22 +15,23 @@ describe('deep_link', () => {
         }
         const uri = createPayDeepLink(txConfig)
         const paseResult = parseDeepLink(uri)
-        assert.equal(paseResult.chainID, txConfig.chainID)
-        assert.equal(paseResult.version, txConfig.version)
-        assert.equal(paseResult.type, txConfig.type)
-        assert.equal(paseResult.to, txConfig.to)
-        assert.equal(paseResult.toName, txConfig.toName)
-        assert.equal(paseResult.gasPrice, txConfig.gasPrice)
-        assert.equal(paseResult.gasLimit, txConfig.gasLimit)
-        assert.equal(paseResult.amount.toString(), txConfig.amount)
-        assert.equal(paseResult.data, txConfig.data)
-        assert.equal(paseResult.expirationTime, txConfig.expirationTime)
-        assert.equal(paseResult.message, txConfig.message)
-        assert.equal(paseResult.from, txConfig.from)
-        assert.equal(paseResult.gasPayer, txConfig.gasPayer)
-        assert.deepEqual(paseResult.gasPayerSigs, txConfig.gasPayerSigs)
-        assert.deepEqual(paseResult.sigs, txConfig.sigs)
-        assert.equal(paseResult.receiver, txConfig.receiver)
+        assert.equal(paseResult.data.chainID, txConfig.chainID)
+        assert.equal(paseResult.data.version, txConfig.version)
+        assert.equal(paseResult.data.type, txConfig.type)
+        assert.equal(paseResult.data.to, txConfig.to)
+        assert.equal(paseResult.data.toName, txConfig.toName)
+        assert.equal(paseResult.data.gasPrice, txConfig.gasPrice)
+        assert.equal(paseResult.data.gasLimit, txConfig.gasLimit)
+        assert.equal(paseResult.data.amount.toString(), txConfig.amount)
+        assert.equal(paseResult.data.data, txConfig.data)
+        assert.equal(paseResult.data.expirationTime, txConfig.expirationTime)
+        assert.equal(paseResult.data.message, txConfig.message)
+        assert.equal(paseResult.data.from, txConfig.from)
+        assert.equal(paseResult.data.gasPayer, txConfig.gasPayer)
+        assert.deepEqual(paseResult.data.gasPayerSigs, txConfig.gasPayerSigs)
+        assert.deepEqual(paseResult.data.sigs, txConfig.sigs)
+        assert.equal(paseResult.data.receiver, txConfig.receiver)
+        assert.equal(paseResult.deepLinkType, DeepLinkType.PAY)
     })
     // only has one sig in Array
     it('sigs_only_one', () => {
@@ -41,7 +43,7 @@ describe('deep_link', () => {
         }
         const uri = createPayDeepLink(txConfig)
         const paseResult = parseDeepLink(uri)
-        assert.deepEqual(paseResult.sigs, txConfig.sigs)
+        assert.deepEqual(paseResult.data.sigs, txConfig.sigs)
     })
     // txConfig have not from
     it('txConfig_no_from', () => {
@@ -51,7 +53,7 @@ describe('deep_link', () => {
         }
         const uri = createPayDeepLink(txConfig)
         const parsedConfig = parseDeepLink(uri)
-        assert.deepEqual(txConfig, parsedConfig)
+        assert.deepEqual(txConfig, parsedConfig.data)
     })
     // txConfig have not from
     it('uri_contains_invalid_property', () => {
@@ -91,9 +93,9 @@ describe('sign_deep_link', () => {
         }
         const uri = createSignDeepLink(config)
         const paseResult = parseDeepLink(uri)
-        assert.equal(paseResult.message, config.message)
-        assert.equal(paseResult.signer, config.signer)
-        assert.equal(paseResult.receiver, config.receiver)
+        assert.equal(paseResult.data.message, config.message)
+        assert.equal(paseResult.data.signer, config.signer)
+        assert.equal(paseResult.data.receiver, config.receiver)
     })
     it('normal_data_config', () => {
         const config = {
