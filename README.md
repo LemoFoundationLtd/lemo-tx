@@ -724,7 +724,7 @@ Parse deep link
 0. `string` - Deep links that need to be resolved. 
 
 ##### Returns
-`object` - The result after parsing，It has two parameters：
+`object` - The result after parsing, It has two filed:
     `data` - (object)Parsed object information
     `deepLinkType` - (number)Type of deeplink，like the same parameter in [deeplinkType](#data-deepLink-type)
 
