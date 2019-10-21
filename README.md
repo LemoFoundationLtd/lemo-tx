@@ -693,7 +693,7 @@ LemoTx.createSignDeepLink(config)
 Create deep links for signatures
 
 ##### Parameters
-0. `object` - Trading information before signature, includes：
+0. `object` - transaction information before signature, includes：
     `message` - (string)(optional)Text to be signed
     `data` - (string)(optional)The hexadecimal data string to be signed. It must begin with 0x. If `message` is set, then `data` will be ignore
     `signer` - (string)(optional)The account address who has the right to sign

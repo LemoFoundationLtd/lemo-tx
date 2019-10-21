@@ -690,7 +690,7 @@ tx.createSignDeepLink(config)
 创建签名用的深度链接
 
 ##### Parameters
-0. `object` - 签名前的交易信息, 其中：
+0. `object` - 需要签名的数据, 其中：
     `message` - (string)(选填)待签名的文本
     `data` - (string)(选填)待签名的16进制数据字符串，必须是0x开头。和message字段互斥
     `signer` - (string)(选填)限定必须使用该账户来签名，可以不填
