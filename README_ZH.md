@@ -720,7 +720,9 @@ tx.parseDeepLink(uri)
 0. `string` - 需要解析的深度链接
 
 ##### Returns
-`object` - 解析出来的对象信息
+`object` - 解析之后的结果，其中包含两个参数：
+    `data` - (object)解析出来的对象信息
+    `deepLinkType` - (number)深度链接的类型，可参考 [深度链接类型](#data-deepLink-type)
 
 ##### Example
 ```js
@@ -728,12 +730,12 @@ tx.parseDeepLink(uri)
 const deepLinkTx = 'lemo://pay?ty=0&c=200&v=1&f=Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D&t=Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH&tn=aa&gp=0.000000002&gl=100&a=0.000000000000000001&d=0x0c&e=1544584596&m=YWFh'
 const resultTx = LemoTx.parseDeepLink(deepLinkTx)
 console.log(resultTx)
-// {"type":0,"version":1,"chainID":200,"from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","to":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","toName":"aa","gasPrice":"2","gasLimit":100,"amount":"1","data":"0x0c","expirationTime":1544584596,"message":"aaa"}
+// {"data":{"type":0,"version":1,"chainID":200,"from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","to":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","toName":"aa","gasPrice":"2","gasLimit":100,"amount":"1","data":"0x0c","expirationTime":1544584596,"message":"aaa"},"deepLinkType":0}
 // 解析结果为签名信息
 const deepLinkSign = 'lemo://sign?m=c2lnbiB0aGlzIG1lc3NhZ2U&s=Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH&r=http%3A%2F%2Flemochain.com%2Fa%3Fb%3Dc'
 const resultSign = LemoTx.parseDeepLink(deepLinkSign)
 console.log(resultSign)
-// {"message":"sign this message","signer":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","receiver":"http://lemochain.com/a?b=c"}
+// {"data":{"message":"sign this message","signer":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","receiver":"http://lemochain.com/a?b=c"},"deepLinkType":1}
 ```
 
 ---
