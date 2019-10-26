@@ -113,4 +113,20 @@ describe('updateProfile_test', () => {
     })
 })
 
-
+describe('Modify_Asset_more_params', () => {
+    it('modify_normal', () => {
+        const modifyAssetInfo = {
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            updateProfile: {
+                name: 'Demo Asset',
+                symbol: 'DT',
+                description: 'demo asset',
+                suggestedGasLimit: '60000',
+                demo: 'demo',
+            },
+        }
+        const tx = new ModifyAssetTx({chainID, from}, modifyAssetInfo)
+        assert.equal(tx.type, TxType.MODIFY_ASSET)
+        assert.equal(parseHexObject(tx.data).updateProfile.demo, modifyAssetInfo.updateProfile.demo)
+    })
+})

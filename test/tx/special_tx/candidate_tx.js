@@ -19,7 +19,7 @@ describe('CandidateTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo, port: minCandidateInfo.port.toString()}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCandidateInfo, port: minCandidateInfo.port.toString(), isCandidate: 'true'}))
     })
     it('useless config', () => {
         const tx = new CandidateTx(
@@ -38,7 +38,7 @@ describe('CandidateTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 101)
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo, port: minCandidateInfo.port.toString()}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCandidateInfo, port: minCandidateInfo.port.toString(), isCandidate: 'true'}))
     })
     it('useful config', () => {
         const candidateInfo = {
@@ -215,5 +215,19 @@ describe('isCandidate', () => {
         )
         const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
         assert.equal(decodeUtf8Hex(tx.data).isCandidate, result.isCandidate)
+    })
+})
+describe('CandidateTx_more_params', () => {
+    it('new_params', () => {
+        const moreCandidateInfo = {
+            incomeAddress: 'lemobw',
+            nodeID: '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            host: '127.0.0.1:8008',
+            isCandidate: true,
+            port: 7001,
+            demo: 'Demo',
+        }
+        const tx = new CandidateTx({chainID, from}, moreCandidateInfo)
+        assert.equal(JSON.parse(decodeUtf8Hex(tx.data)).demo, moreCandidateInfo.demo)
     })
 })
