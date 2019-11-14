@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import {toBuffer} from 'lemo-utils'
 import {chainID, testAddr, testPrivate, txInfo} from '../../datas'
-import {createVote, createTempAddress} from '../../../lib/tx/tx_factory'
+import {createVote, createTempAddress, createBoxTx} from '../../../lib/tx/tx_factory'
 import BoxTx from '../../../lib/tx/special_tx/box_tx'
 import {TxType} from '../../../lib/const'
 import errors from '../../../lib/errors'
@@ -53,5 +53,16 @@ describe('box_tx', () => {
             // two sign box Tx
             new BoxTx({chainID, from: testAddr}, subTxList)
         }, errors.InvalidAddressCheckSum('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJDDDDD'))
+    })
+    it('box_tx_include_boxTx', () => {
+        const vote = createVote(txInfo.txConfig)
+        const voteSig = lemoTx.sign(testPrivate, vote)
+        const List = [voteSig]
+        const boxTx = createBoxTx({chainID, from: testAddr}, List)
+        const boxTxSig = lemoTx.sign(testPrivate, boxTx)
+        const subTxList = [boxTxSig]
+        assert.throws(() => {
+            new BoxTx({chainID, from: testAddr}, subTxList)
+        }, errors.InvalidBoxTransaction())
     })
 })
