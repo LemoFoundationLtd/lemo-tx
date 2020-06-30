@@ -7,6 +7,9 @@
 
 A tool for creating, manipulating and signing LemoChain transactions.
 
+[中文版](https://github.com/LemoFoundationLtd/lemo-tx/blob/master/README_ZH.md)  
+[English](https://github.com/LemoFoundationLtd/lemo-tx/blob/master/README.md)
+
 ## Installing
 
 ### Using Yarn
@@ -39,10 +42,10 @@ console.log(tx.toString())
 
 API | description
 ---|---
-[new LemoTx(txInfo)](#tx-sign) | Create a transaction 
+[new LemoTx(txInfo)](#data-structure-transaction) | Create a transaction 
 [tx.signWith(privateKey)](#tx-signWith) | Sign transaction 
-[tx.hash()](#tx-hash) | Calculate hash of the transaction 
-[tx.toString()](#tx-toString) | Format transaction to json string 
+tx.hash() | Calculate hash of the transaction 
+tx.toString() | Format transaction to json string 
 
 Static Properties | description
 ---|---

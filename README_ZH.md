@@ -7,6 +7,9 @@
 
 用于创建、操作和签名LemoChain的工具。
 
+[中文版](https://github.com/LemoFoundationLtd/lemo-tx/blob/master/README_ZH.md)  
+[English](https://github.com/LemoFoundationLtd/lemo-tx/blob/master/README.md)
+
 ## 安装
 
 ### 使用yarn
@@ -39,10 +42,10 @@ console.log(tx.toString())
 
 API | 功能
 ---|---
-[new LemoTx(txInfo)](#tx-sign) | 创建普通交易
+[new LemoTx(txInfo)](#data-structure-transaction) | 创建普通交易
 [tx.signWith(privateKey)](#tx-signWith) | 对交易进行签名
-[tx.hash()](#tx-hash) | 计算交易hash值
-[tx.toString()](#tx-toString) | 格式化交易json字符串
+tx.hash() | 计算交易hash值
+tx.toString() | 格式化交易json字符串
 
 静态属性 | 说明
 ---|---
