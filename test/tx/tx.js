@@ -10,6 +10,7 @@ import {
     TX_SIG_BYTE_LENGTH,
     TX_VERSION,
     TTTL,
+    TX_DEFAULT_BEFORE_TTTL,
     TX_DEFAULT_GAS_LIMIT,
     TX_DEFAULT_GAS_PRICE,
     MAX_TX_MESSAGE_LENGTH,
@@ -33,7 +34,7 @@ describe('Tx_new', () => {
         assert.equal(tx.gasLimit, TX_DEFAULT_GAS_LIMIT)
         assert.equal(tx.amount, 0)
         assert.equal(tx.data, '')
-        assert.equal(tx.expirationTime, Math.floor(Date.now() / 1000) + TTTL)
+        assert.equal(tx.expirationTime, Math.floor(Date.now() / 1000) + TTTL - TX_DEFAULT_BEFORE_TTTL)
         assert.equal(tx.message, '')
         assert.deepEqual(tx.sigs, [])
         assert.deepEqual(tx.gasPayerSigs, [])
@@ -133,8 +134,8 @@ describe('Tx_expirationTime', () => {
         const before = Math.floor(Date.now() / 1000)
         const tx = new Tx({chainID, from: testAddr})
         const after = Math.floor(Date.now() / 1000)
-        assert.isAtLeast(tx.expirationTime, before + TTTL)
-        assert.isAtMost(tx.expirationTime, after + TTTL)
+        assert.isAtLeast(tx.expirationTime, before + TTTL - TX_DEFAULT_BEFORE_TTTL)
+        assert.isAtMost(tx.expirationTime, after + TTTL - TX_DEFAULT_BEFORE_TTTL)
     })
 })
 
@@ -227,11 +228,11 @@ describe('all config', () => {
         {field: 'amount', configData: 'abc', error: errors.TXMustBeNumber('amount', 'abc')},
         {field: 'amount', configData: -1, error: errors.TXNegativeError('amount')},
         {field: 'amount', configData: '-1', error: errors.TXMustBeNumber('amount', '-1')},
-        {field: 'expirationTime', configData: undefined, result: Math.floor(Date.now() / 1000) + TTTL},
-        {field: 'expirationTime', configData: 0, result: Math.floor(Date.now() / 1000) + TTTL},
+        {field: 'expirationTime', configData: undefined, result: Math.floor(Date.now() / 1000) + TTTL - TX_DEFAULT_BEFORE_TTTL},
+        {field: 'expirationTime', configData: 0, result: Math.floor(Date.now() / 1000) + TTTL - TX_DEFAULT_BEFORE_TTTL},
         {field: 'expirationTime', configData: 1},
         {field: 'expirationTime', configData: 0xff},
-        {field: 'expirationTime', configData: '', result: Math.floor(Date.now() / 1000) + TTTL},
+        {field: 'expirationTime', configData: '', result: Math.floor(Date.now() / 1000) + TTTL - TX_DEFAULT_BEFORE_TTTL},
         {field: 'expirationTime', configData: '1', result: 1},
         {field: 'expirationTime', configData: 'abc', error: errors.TXMustBeNumber('expirationTime', 'abc')},
         {field: 'expirationTime', configData: -1, error: errors.TXNegativeError('expirationTime')},
